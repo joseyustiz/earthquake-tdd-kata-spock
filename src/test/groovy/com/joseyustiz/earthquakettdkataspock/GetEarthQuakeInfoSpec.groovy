@@ -6,24 +6,24 @@ class GetEarthQuakeInfoSpec extends Specification {
 
     def "there is no earthquake info between two dates"() {
         given:
-        LoadEarthQuakeInfoPort earthQuakeInfoReader = new EarthQuakeInfoAdapter();
+        GetEarthQuakeInfoUseCase earthQuakeInfoService = new GetEarthQuakeInfoService();
         def startDate = "2019-10-13"
         def endDate = "2019-10-13"
+
         when:
-        def earthQuakeInfo = earthQuakeInfoReader.getEarthQuakeInfoBetweenDate(startDate, endDate)
+        def earthQuakeInfo = earthQuakeInfoService.getInfoBetweenDates(startDate, endDate)
+
         then:
         earthQuakeInfo.isEmpty()
     }
 
-    interface LoadEarthQuakeInfoPort {
-        List<String> getEarthQuakeInfoBetweenDate(String startDate, String endDate);
+    interface GetEarthQuakeInfoUseCase {
+        List<String> getInfoBetweenDates(String startDate, String endDate);
     }
 
-    class EarthQuakeInfoAdapter implements LoadEarthQuakeInfoPort {
+    class GetEarthQuakeInfoService implements GetEarthQuakeInfoUseCase {
 
-
-        @Override
-        List<String> getEarthQuakeInfoBetweenDate(String startDate, String endDate) {
+        List<String> getInfoBetweenDates(String startDate, String endDate) {
             return new ArrayList();
         }
     }
