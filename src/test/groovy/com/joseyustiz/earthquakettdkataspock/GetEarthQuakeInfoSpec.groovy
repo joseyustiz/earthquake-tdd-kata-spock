@@ -35,6 +35,23 @@ class GetEarthquakeInfoSpec extends Specification {
 
     }
 
+    def "get earthquake info from database service between two dates"(){
+        given:
+        def earthquakeDatabaseService = Mock(LoadEarthquakeInfoPort)
+        earthquakeDatabaseService.getInfoBetweenDates(_,_) << ["Earthquake 1", "Earthquake 2"]
+        GetEarthquakeInfoUseCase earthquakeInfoService = new GetEarthquakeInfoService();
+
+        when:
+        def earthquakesInfo = earthquakeDatabaseService.getInfoBetweenDates(_, _)
+        earthquakesInfo == ["Earthquake 1", "Earthquake 2"]
+    }
+    interface LoadEarthquakeInfoPort{
+
+        List<String> getInfoBetweenDates(String startDate, String endDate)
+    }
+    class EarthquakeInfoAdapter implements LoadEarthquakeInfoPort{
+
+    }
     interface GetEarthquakeInfoUseCase {
         List<String> getInfoBetweenDates(String startDate, String endDate);
     }
