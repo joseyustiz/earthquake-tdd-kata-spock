@@ -24,7 +24,7 @@ class GetEarthQuakeInfoSpec extends Specification {
 
         @Override
         List<String> getEarthQuakeInfoBetweenDate(String startDate, String endDate) {
-            return null
+            return new ArrayList();
         }
     }
 }
