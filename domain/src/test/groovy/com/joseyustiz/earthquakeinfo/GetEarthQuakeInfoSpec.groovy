@@ -53,5 +53,16 @@ class GetEarthquakeInfoSpec extends Specification {
 
     }
 
+    def "get earthquake info between two magnitudes from database service"(){
+        given:
+        def minMagnitude = 6.5
+        def maxMagnitude = 7.0
+
+        when:
+        def earthquakesInfo = earthquakeInfoService.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude)
+
+        then:
+        earthquakesInfo == ["Earthquake 2"]
+    }
 
 }
