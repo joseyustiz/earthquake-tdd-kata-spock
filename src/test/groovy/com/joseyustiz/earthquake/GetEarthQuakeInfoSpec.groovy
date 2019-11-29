@@ -2,13 +2,17 @@ package com.joseyustiz.earthquake
 
 import com.joseyustiz.earthquake.application.service.GetEarthquakeInfoService
 import com.joseyustiz.earthquakeinfo.application.port.in.GetEarthquakeInfoUseCase
+import spock.lang.Shared
 import spock.lang.Specification
 
 class GetEarthquakeInfoSpec extends Specification {
-    private GetEarthquakeInfoUseCase earthquakeInfoService;
+    @Shared private GetEarthquakeInfoUseCase earthquakeInfoService;
 
-    def setup() {
-        earthquakeInfoService = new GetEarthquakeInfoService(new EarthquakeInfoInMemoryDatabaseAdapter());
+    def setupSpec() {
+        def inMemoryDB = new EarthquakeInfoInMemoryDatabaseAdapter()
+        earthquakeInfoService = new GetEarthquakeInfoService(inMemoryDB)
+        inMemoryDB.addEarthquakeInfo("2019-10-14", Collections.singletonList("Earthquake 1"))
+        inMemoryDB.addEarthquakeInfo("2019-10-15", Collections.singletonList("Earthquake 2"))
     }
 
     def "there is no info when there was no earthquake between two dates"() {
@@ -17,10 +21,10 @@ class GetEarthquakeInfoSpec extends Specification {
         def endDate = "2019-10-13"
 
         when:
-        def earthquakeInfo = earthquakeInfoService.getInfoBetweenDates(startDate, endDate)
+        def earthquakesInfo = earthquakeInfoService.getInfoBetweenDates(startDate, endDate)
 
         then:
-        earthquakeInfo.isEmpty()
+        earthquakesInfo.isEmpty()
     }
 
     def "get earthquake info if there was at least one earthquake between two dates"(){
@@ -29,10 +33,10 @@ class GetEarthquakeInfoSpec extends Specification {
         def endDate = "2019-10-14"
 
         when:
-        def earthquakes = earthquakeInfoService.getInfoBetweenDates(startDate, endDate)
+        def earthquakesInfo = earthquakeInfoService.getInfoBetweenDates(startDate, endDate)
 
         then:
-        !earthquakes.isEmpty()
+        !earthquakesInfo.isEmpty()
 
     }
 

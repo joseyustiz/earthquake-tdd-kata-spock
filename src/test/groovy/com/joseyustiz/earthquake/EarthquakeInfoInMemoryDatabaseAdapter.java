@@ -13,8 +13,6 @@ public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfo
 
     EarthquakeInfoInMemoryDatabaseAdapter() {
         this.earthquakes = new HashMap<>();
-        earthquakes.put(parse("2019-10-14"), Collections.singletonList("Earthquake 1"));
-        earthquakes.put(parse("2019-10-15"),Collections.singletonList("Earthquake 2"));
     }
 
     @Override
