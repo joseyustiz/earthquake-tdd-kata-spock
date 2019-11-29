@@ -74,7 +74,11 @@ class GetEarthquakeInfoSpec extends Specification {
         where:
         startDateRange1 | endDateRange1 | startDateRange2 | endDateRange2 | earthquakesInfo
         "2019-10-13"    | "2019-10-13"  | "2019-10-13"    | "2019-10-13"  | []
+        "2019-10-13"    | "2019-10-14"  | "2019-10-13"    | "2019-10-14"  | [earthquake1]
 
         message = "Retrieved " + earthquakesInfo.size() + " earthquake(s) info given that happened " + earthquakesInfo.size() + " earthquake(s) between " + startDateRange1 + " to " + endDateRange1 + " and " + startDateRange2 + " to " + endDateRange2
     }
 }
+
+//"2019-10-13"    | "2019-10-15"  | "2019-10-13"    | "2019-10-14"  | [earthquake1, earthquake2]
+//"2019-10-13"    | "2019-10-14"  | "2019-10-15"    | "2019-10-16"  | [earthquake1, earthquake2]
