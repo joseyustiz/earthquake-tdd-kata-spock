@@ -18,6 +18,6 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
 
     @Override
     public List<String> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude) {
-        return null;
+        return loadEarthquakeInfoPort.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude);
     }
 }

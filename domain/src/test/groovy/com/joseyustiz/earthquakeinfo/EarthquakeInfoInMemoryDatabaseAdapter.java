@@ -30,6 +30,11 @@ public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfo
         return earthquakeInfoInDateRange;
     }
 
+    @Override
+    public List<String> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude) {
+        return null;
+    }
+
     private Set<LocalDate> getDateRange(LocalDate sDate, LocalDate eDate) {
         return sDate.datesUntil(eDate).collect(Collectors.toSet());
     }
