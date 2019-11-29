@@ -24,6 +24,6 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
 
     @Override
     public List<EarthquakeInfo> getInfoBetweenTwoDateRanges(String startDateRange1, String endDateRange1, String startDateRange2, String endDateRange2) {
-        return null;
+        return loadEarthquakeInfoPort.getInfoBetweenTwoDateRanges(startDateRange1, endDateRange1, startDateRange2, endDateRange2);
     }
 }
