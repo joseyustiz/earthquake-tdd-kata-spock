@@ -3,32 +3,29 @@ package com.joseyustiz.earthquakeinfo;
 import com.joseyustiz.earthquakeinfo.application.port.out.LoadEarthquakeInfoPort;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.time.LocalDate.parse;
 import static java.util.Comparator.comparing;
 
 public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfoPort {
-    private Map<LocalDate, List<EarthquakeInfo>> earthquakes;
+    private Set<EarthquakeInfo> earthquakes;
 
     EarthquakeInfoInMemoryDatabaseAdapter() {
-        this.earthquakes = new HashMap<>();
+        this.earthquakes = new HashSet<>();
     }
 
     @Override
     public List<EarthquakeInfo> getInfoBetweenDates(String startDate, String endDate) {
         LocalDate sDate= parse(startDate);
         LocalDate eDate= parse(endDate).plusDays(1);
-
-        List<EarthquakeInfo> earthquakeInfoInDateRange = new ArrayList<>();
-
-        for (LocalDate date : getDateRange(sDate, eDate)){
-            if(earthquakes.containsKey(date))
-                earthquakeInfoInDateRange.addAll(earthquakes.get(date));
-        }
-        earthquakeInfoInDateRange.sort(comparing(EarthquakeInfo::getDate));
-        return earthquakeInfoInDateRange;
+        return earthquakes.stream()
+                .filter(i ->i.getDate().isAfter(sDate) && i.getDate().isBefore(eDate))
+                .sorted(comparing(EarthquakeInfo::getDate))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -40,10 +37,7 @@ public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfo
         return sDate.datesUntil(eDate).collect(Collectors.toSet());
     }
 
-    public void addEarthquakeInfo(LocalDate date, List<EarthquakeInfo> earthquakesInfo){
-        if(earthquakes.containsKey(date))
-            earthquakes.get(date).addAll(earthquakesInfo);
-        else
-            earthquakes.put(date, new ArrayList<>(earthquakesInfo));
+    public void addEarthquakeInfo(EarthquakeInfo earthquakesInfo){
+        earthquakes.add(earthquakesInfo);
     }
 }

@@ -15,8 +15,8 @@ class GetEarthquakeInfoSpec extends Specification {
 
         def inMemoryDB = new EarthquakeInfoInMemoryDatabaseAdapter()
         earthquakeInfoService = new GetEarthquakeInfoService(inMemoryDB)
-        inMemoryDB.addEarthquakeInfo(parse("2019-10-14"), Collections.singletonList(earthquake1))
-        inMemoryDB.addEarthquakeInfo(parse("2019-10-15"), Collections.singletonList(earthquake2))
+        inMemoryDB.addEarthquakeInfo(earthquake1)
+        inMemoryDB.addEarthquakeInfo(earthquake2)
     }
 
     def "there is no info when there was no earthquake between two dates"() {
