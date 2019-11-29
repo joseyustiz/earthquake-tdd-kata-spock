@@ -1,7 +1,7 @@
-package com.joseyustiz.earthquake
+package com.joseyustiz.earthquakeinfo
 
-import com.joseyustiz.earthquake.application.service.GetEarthquakeInfoService
 import com.joseyustiz.earthquakeinfo.application.port.in.GetEarthquakeInfoUseCase
+import com.joseyustiz.earthquakeinfo.application.service.GetEarthquakeInfoService
 import spock.lang.Shared
 import spock.lang.Specification
 

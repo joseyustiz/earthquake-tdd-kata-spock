@@ -1,4 +1,4 @@
-package com.joseyustiz.earthquake;
+package com.joseyustiz.earthquakeinfo;
 
 import com.joseyustiz.earthquakeinfo.application.port.out.LoadEarthquakeInfoPort;
 
