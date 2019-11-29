@@ -6,7 +6,7 @@ import com.joseyustiz.earthquakeinfo.application.port.out.LoadEarthquakeInfoPort
 import java.util.List;
 
 public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
-    LoadEarthquakeInfoPort loadEarthquakeInfoPort;
+    private LoadEarthquakeInfoPort loadEarthquakeInfoPort;
 
     public GetEarthquakeInfoService(LoadEarthquakeInfoPort loadEarthquakeInfoPort) {
         this.loadEarthquakeInfoPort = loadEarthquakeInfoPort;
