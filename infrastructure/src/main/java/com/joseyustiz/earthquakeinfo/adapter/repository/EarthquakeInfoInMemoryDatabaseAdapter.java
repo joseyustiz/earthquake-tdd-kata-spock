@@ -1,5 +1,6 @@
-package com.joseyustiz.earthquakeinfo;
+package com.joseyustiz.earthquakeinfo.adapter.repository;
 
+import com.joseyustiz.earthquakeinfo.EarthquakeInfo;
 import com.joseyustiz.earthquakeinfo.application.port.out.LoadEarthquakeInfoPort;
 
 import java.time.LocalDate;
