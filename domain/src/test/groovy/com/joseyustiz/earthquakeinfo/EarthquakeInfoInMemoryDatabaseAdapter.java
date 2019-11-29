@@ -20,24 +20,27 @@ public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfo
 
     @Override
     public List<EarthquakeInfo> getInfoBetweenDates(String startDate, String endDate) {
-        LocalDate sDate= parse(startDate);
-        LocalDate eDate= parse(endDate).plusDays(1);
+        LocalDate sDate = parse(startDate);
+        LocalDate eDate = parse(endDate).plusDays(1);
         return earthquakes.stream()
-                .filter(i ->i.getDate().isAfter(sDate) && i.getDate().isBefore(eDate))
+                .filter(i -> i.getDate().isAfter(sDate) && i.getDate().isBefore(eDate))
                 .sorted(comparing(EarthquakeInfo::getDate))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<EarthquakeInfo> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude) {
-        return null;
+        return earthquakes.stream()
+                .filter(i -> i.getMagnitude() >= minMagnitude && i.getMagnitude() <= maxMagnitude)
+                .sorted(comparing(EarthquakeInfo::getDate))
+                .collect(Collectors.toList());
     }
 
     private Set<LocalDate> getDateRange(LocalDate sDate, LocalDate eDate) {
         return sDate.datesUntil(eDate).collect(Collectors.toSet());
     }
 
-    public void addEarthquakeInfo(EarthquakeInfo earthquakesInfo){
+    public void addEarthquakeInfo(EarthquakeInfo earthquakesInfo) {
         earthquakes.add(earthquakesInfo);
     }
 }
