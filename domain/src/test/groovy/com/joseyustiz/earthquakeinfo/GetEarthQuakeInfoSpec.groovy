@@ -14,58 +14,36 @@ class GetEarthquakeInfoSpec extends Specification {
     @Shared
     private GetEarthquakeInfoUseCase earthquakeInfoService;
     @Shared
-    private def earthquake1 = new EarthquakeInfo("Earthquake 1", parse("2019-10-14"), 6.0)
+    private def earthquake1
     @Shared
-    private def earthquake2 = new EarthquakeInfo("Earthquake 2", parse("2019-10-15"), 7.0)
+    private def earthquake2
 
     def setupSpec() {
-
         def inMemoryDB = new EarthquakeInfoInMemoryDatabaseAdapter()
-        earthquakeInfoService = new GetEarthquakeInfoService(inMemoryDB)
+        earthquake1 = new EarthquakeInfo("Earthquake 1", parse("2019-10-14"), 6.0)
         inMemoryDB.addEarthquakeInfo(earthquake1)
+        earthquake2 = new EarthquakeInfo("Earthquake 2", parse("2019-10-15"), 7.0)
         inMemoryDB.addEarthquakeInfo(earthquake2)
+
+        earthquakeInfoService = new GetEarthquakeInfoService(inMemoryDB)
     }
 
-    def "there is no info when there was no earthquake between two dates"() {
-        given:
-        def startDate = "2019-10-13"
-        def endDate = "2019-10-13"
-
-        when:
-        def earthquakesInfo = earthquakeInfoService.getInfoBetweenDates(startDate, endDate)
-
-        then:
-        earthquakesInfo.isEmpty()
-    }
-
-    def "get earthquake info if there was at least one earthquake between two dates"() {
-        given:
-        def startDate = "2019-10-13"
-        def endDate = "2019-10-14"
-
-        when:
-        def earthquakesInfo = earthquakeInfoService.getInfoBetweenDates(startDate, endDate)
-
-        then:
-        !earthquakesInfo.isEmpty()
-
-    }
-
+    @Unroll("#message")
     def "get earthquake info from database service between two dates"() {
-        given:
-        def startDate = "2019-10-13"
-        def endDate = "2019-10-15"
+        expect:
+        earthquakeInfoService.getInfoBetweenDates(startDate, endDate) == earthquakesInfo
 
-        when:
-        def earthquakesInfo = earthquakeInfoService.getInfoBetweenDates(startDate, endDate)
+        where:
+        startDate    | endDate      | earthquakesInfo
+        "2019-10-13" | "2019-10-13" | []
+        "2019-10-13" | "2019-10-14" | [earthquake1]
+        "2019-10-13" | "2019-10-15" | [earthquake1, earthquake2]
 
-        then:
-        earthquakesInfo == [earthquake1, earthquake2]
-
+        message = "Retrieved " + earthquakesInfo.size() + " earthquake(s) info given that happened " + earthquakesInfo.size() +" from " + startDate + " to " + endDate
     }
 
-    @Unroll
-    def "#howManyEarthquakeInfoThereAre between the magnitudes: '#minMagnitude' and '#maxMagnitude' from database service"() {
+    @Unroll("#message")
+    def "get earthquake info between two magnitudes from database service"() {
         expect:
         earthquakeInfoService.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude) == earthquakesInfo
 
@@ -74,8 +52,6 @@ class GetEarthquakeInfoSpec extends Specification {
         1.5          | 2.0          | []
         6.5          | 7.0          | [earthquake2]
         6.0          | 7.0          | [earthquake1, earthquake2]
-
-        howManyEarthquakeInfoThereAre = earthquakesInfo.isEmpty() ? "There is no earthquake info " :
-                "There is/are info of " + earthquakesInfo.size() + " earthquake(s)"
+        message = "Retrieved " + earthquakesInfo.size() + " earthquake(s) info given that happened " + earthquakesInfo.size() +" with magnitude between " + minMagnitude + " to " + maxMagnitude
     }
 }
