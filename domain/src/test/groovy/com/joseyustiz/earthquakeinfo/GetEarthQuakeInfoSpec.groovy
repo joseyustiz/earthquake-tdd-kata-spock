@@ -19,22 +19,32 @@ class GetEarthquakeInfoSpec extends Specification {
     @Shared
     private def earthquake2
     @Shared
+    private def earthquake3
+    @Shared
+    private def earthquake4
+    @Shared
     private def mockedEarthquakeDatabase = Mock(LoadEarthquakeInfoPort)
 
     def setupSpec() {
         earthquake1 = new EarthquakeInfo("Earthquake 1", parse("2019-10-14"), 6.0)
         earthquake2 = new EarthquakeInfo("Earthquake 2", parse("2019-10-15"), 7.0)
 
+        earthquake3 = new EarthquakeInfo("Earthquake 3", parse("2019-10-16"), 8.0)
+        earthquake4 = new EarthquakeInfo("Earthquake 4", parse("2019-10-16"), 9.0)
+
         mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-13", "2019-10-13") >> []
         mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-13", "2019-10-14") >> [earthquake1]
         mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-13", "2019-10-15") >> [earthquake1, earthquake2]
+        mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-15", "2019-10-16") >> [earthquake2, earthquake3, earthquake4]
 
         mockedEarthquakeDatabase.getInfoBetweenMagnitudes(1.5, 2.0) >> []
         mockedEarthquakeDatabase.getInfoBetweenMagnitudes(6.5, 7.0) >> [earthquake2]
         mockedEarthquakeDatabase.getInfoBetweenMagnitudes(6.0, 7.0) >> [earthquake1, earthquake2]
 
-        mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-13","2019-10-13", "2019-10-13") >> []
-
+        mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-13", "2019-10-13", "2019-10-13") >> []
+        mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-14", "2019-10-13", "2019-10-14") >> [earthquake1]
+        mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-15", "2019-10-13", "2019-10-14") >> [earthquake1,earthquake2]
+        mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-14", "2019-10-15", "2019-10-16") >> [earthquake1,earthquake2,earthquake3,earthquake4]
 
         earthquakeInfoService = new GetEarthquakeInfoService(mockedEarthquakeDatabase)
     }
@@ -75,10 +85,8 @@ class GetEarthquakeInfoSpec extends Specification {
         startDateRange1 | endDateRange1 | startDateRange2 | endDateRange2 | earthquakesInfo
         "2019-10-13"    | "2019-10-13"  | "2019-10-13"    | "2019-10-13"  | []
         "2019-10-13"    | "2019-10-14"  | "2019-10-13"    | "2019-10-14"  | [earthquake1]
-
+        "2019-10-13"    | "2019-10-15"  | "2019-10-13"    | "2019-10-14"  | [earthquake1, earthquake2]
+        "2019-10-13"    | "2019-10-14"  | "2019-10-15"    | "2019-10-16"  | [earthquake1,earthquake2,earthquake3,earthquake4]
         message = "Retrieved " + earthquakesInfo.size() + " earthquake(s) info given that happened " + earthquakesInfo.size() + " earthquake(s) between " + startDateRange1 + " to " + endDateRange1 + " and " + startDateRange2 + " to " + endDateRange2
     }
 }
-
-//"2019-10-13"    | "2019-10-15"  | "2019-10-13"    | "2019-10-14"  | [earthquake1, earthquake2]
-//"2019-10-13"    | "2019-10-14"  | "2019-10-15"    | "2019-10-16"  | [earthquake1, earthquake2]

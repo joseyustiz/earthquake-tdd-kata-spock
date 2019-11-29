@@ -4,7 +4,12 @@ import com.joseyustiz.earthquakeinfo.EarthquakeInfo;
 import com.joseyustiz.earthquakeinfo.application.port.in.GetEarthquakeInfoUseCase;
 import com.joseyustiz.earthquakeinfo.application.port.out.LoadEarthquakeInfoPort;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
 
 public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
     private LoadEarthquakeInfoPort loadEarthquakeInfoPort;
@@ -24,6 +29,9 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
 
     @Override
     public List<EarthquakeInfo> getInfoBetweenTwoDateRanges(String startDateRange1, String endDateRange1, String startDateRange2, String endDateRange2) {
-        return loadEarthquakeInfoPort.getInfoBetweenTwoDateRanges(startDateRange1, endDateRange1, startDateRange2, endDateRange2);
+        Set<EarthquakeInfo> infoBetweenDatesR1 = new HashSet<>(loadEarthquakeInfoPort.getInfoBetweenDates(startDateRange1, endDateRange1));
+        List<EarthquakeInfo> infoBetweenDates = loadEarthquakeInfoPort.getInfoBetweenDates(startDateRange2, endDateRange2);
+        infoBetweenDatesR1.addAll(infoBetweenDates);
+        return infoBetweenDatesR1.stream().sorted(comparing(EarthquakeInfo::getDate)).collect(toList());
     }
 }

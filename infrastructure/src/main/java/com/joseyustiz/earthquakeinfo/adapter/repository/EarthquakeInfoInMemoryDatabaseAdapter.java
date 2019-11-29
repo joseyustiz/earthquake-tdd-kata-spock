@@ -37,11 +37,6 @@ public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfo
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<EarthquakeInfo> getInfoBetweenTwoDateRanges(String startDateRange1, String endDateRange1, String startDateRange2, String endDateRange2) {
-        return null;
-    }
-
     public void addEarthquakeInfo(EarthquakeInfo earthquakesInfo) {
         earthquakes.add(earthquakesInfo);
     }
