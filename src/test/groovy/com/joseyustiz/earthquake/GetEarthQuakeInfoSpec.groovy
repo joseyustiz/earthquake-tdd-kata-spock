@@ -5,7 +5,7 @@ import com.joseyustiz.earthquakeinfo.application.port.in.GetEarthquakeInfoUseCas
 import spock.lang.Specification
 
 class GetEarthquakeInfoSpec extends Specification {
-    GetEarthquakeInfoUseCase earthquakeInfoService;
+    private GetEarthquakeInfoUseCase earthquakeInfoService;
 
     def setup() {
         earthquakeInfoService = new GetEarthquakeInfoService(new EarthquakeInfoInMemoryDatabaseAdapter());
@@ -13,7 +13,6 @@ class GetEarthquakeInfoSpec extends Specification {
 
     def "there is no info when there was no earthquake between two dates"() {
         given:
-//        GetEarthquakeInfoUseCase earthquakeInfoService = new GetEarthquakeInfoService(new EarthquakeInfoInMemoryDatabaseAdapter());
         def startDate = "2019-10-13"
         def endDate = "2019-10-13"
 
@@ -26,7 +25,6 @@ class GetEarthquakeInfoSpec extends Specification {
 
     def "get earthquake info if there was at least one earthquake between two dates"(){
         given:
-//        GetEarthquakeInfoUseCase earthquakeInfoService = new GetEarthquakeInfoService(new EarthquakeInfoInMemoryDatabaseAdapter());
         def startDate = "2019-10-13"
         def endDate = "2019-10-14"
 
@@ -42,7 +40,6 @@ class GetEarthquakeInfoSpec extends Specification {
         given:
         def startDate = "2019-10-13"
         def endDate = "2019-10-15"
-//        GetEarthquakeInfoUseCase earthquakeInfoService = new GetEarthquakeInfoService(new EarthquakeInfoInMemoryDatabaseAdapter());
 
         when:
         def earthquakesInfo = earthquakeInfoService.getInfoBetweenDates(startDate, endDate)
