@@ -5,14 +5,18 @@ import com.joseyustiz.earthquakeinfo.application.service.GetEarthquakeInfoServic
 import spock.lang.Shared
 import spock.lang.Specification
 
+import static java.time.LocalDate.parse
+
 class GetEarthquakeInfoSpec extends Specification {
     @Shared private GetEarthquakeInfoUseCase earthquakeInfoService;
-
+    @Shared private def earthquake1 = new EarthquakeInfo("Earthquake 1", parse("2019-10-14"), 6.0)
+    @Shared private def earthquake2 = new EarthquakeInfo("Earthquake 2", parse("2019-10-15"), 7.0)
     def setupSpec() {
+
         def inMemoryDB = new EarthquakeInfoInMemoryDatabaseAdapter()
         earthquakeInfoService = new GetEarthquakeInfoService(inMemoryDB)
-        inMemoryDB.addEarthquakeInfo("2019-10-14", Collections.singletonList("Earthquake 1"))
-        inMemoryDB.addEarthquakeInfo("2019-10-15", Collections.singletonList("Earthquake 2"))
+        inMemoryDB.addEarthquakeInfo(parse("2019-10-14"), Collections.singletonList(earthquake1))
+        inMemoryDB.addEarthquakeInfo(parse("2019-10-15"), Collections.singletonList(earthquake2))
     }
 
     def "there is no info when there was no earthquake between two dates"() {
@@ -49,7 +53,7 @@ class GetEarthquakeInfoSpec extends Specification {
         def earthquakesInfo = earthquakeInfoService.getInfoBetweenDates(startDate, endDate)
 
         then:
-        earthquakesInfo == ["Earthquake 1", "Earthquake 2"]
+        earthquakesInfo == [earthquake1, earthquake2]
 
     }
 
@@ -62,7 +66,7 @@ class GetEarthquakeInfoSpec extends Specification {
         def earthquakesInfo = earthquakeInfoService.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude)
 
         then:
-        earthquakesInfo == ["Earthquake 2"]
+        earthquakesInfo == [earthquake2]
     }
 
 }

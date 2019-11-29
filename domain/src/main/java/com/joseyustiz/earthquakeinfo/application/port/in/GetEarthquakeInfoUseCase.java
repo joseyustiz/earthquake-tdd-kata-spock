@@ -1,9 +1,11 @@
 package com.joseyustiz.earthquakeinfo.application.port.in;
 
+import com.joseyustiz.earthquakeinfo.EarthquakeInfo;
+
 import java.util.List;
 
 public interface GetEarthquakeInfoUseCase {
-    List<String> getInfoBetweenDates(String startDate, String endDate);
+    List<EarthquakeInfo> getInfoBetweenDates(String startDate, String endDate);
 
-    List<String> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude);
+    List<EarthquakeInfo> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude);
 }

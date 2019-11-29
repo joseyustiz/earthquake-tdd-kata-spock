@@ -7,31 +7,32 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.time.LocalDate.parse;
+import static java.util.Comparator.comparing;
 
 public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfoPort {
-    private Map<LocalDate, List<String>> earthquakes;
+    private Map<LocalDate, List<EarthquakeInfo>> earthquakes;
 
     EarthquakeInfoInMemoryDatabaseAdapter() {
         this.earthquakes = new HashMap<>();
     }
 
     @Override
-    public List<String> getInfoBetweenDates(String startDate, String endDate) {
+    public List<EarthquakeInfo> getInfoBetweenDates(String startDate, String endDate) {
         LocalDate sDate= parse(startDate);
         LocalDate eDate= parse(endDate).plusDays(1);
 
-        List<String> earthquakeInfoInDateRange = new ArrayList<>();
+        List<EarthquakeInfo> earthquakeInfoInDateRange = new ArrayList<>();
 
         for (LocalDate date : getDateRange(sDate, eDate)){
             if(earthquakes.containsKey(date))
                 earthquakeInfoInDateRange.addAll(earthquakes.get(date));
         }
-        Collections.sort(earthquakeInfoInDateRange);
+        earthquakeInfoInDateRange.sort(comparing(EarthquakeInfo::getDate));
         return earthquakeInfoInDateRange;
     }
 
     @Override
-    public List<String> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude) {
+    public List<EarthquakeInfo> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude) {
         return null;
     }
 
@@ -39,11 +40,10 @@ public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfo
         return sDate.datesUntil(eDate).collect(Collectors.toSet());
     }
 
-    public void addEarthquakeInfo(String date, List<String> earthquakesInfo){
-        LocalDate parsedDate = parse(date);
-        if(earthquakes.containsKey(parsedDate))
-            earthquakes.get(parsedDate).addAll(earthquakesInfo);
+    public void addEarthquakeInfo(LocalDate date, List<EarthquakeInfo> earthquakesInfo){
+        if(earthquakes.containsKey(date))
+            earthquakes.get(date).addAll(earthquakesInfo);
         else
-            earthquakes.put(parsedDate, new ArrayList<>(earthquakesInfo));
+            earthquakes.put(date, new ArrayList<>(earthquakesInfo));
     }
 }

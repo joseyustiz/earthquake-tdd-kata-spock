@@ -1,5 +1,6 @@
 package com.joseyustiz.earthquakeinfo.application.service;
 
+import com.joseyustiz.earthquakeinfo.EarthquakeInfo;
 import com.joseyustiz.earthquakeinfo.application.port.in.GetEarthquakeInfoUseCase;
 import com.joseyustiz.earthquakeinfo.application.port.out.LoadEarthquakeInfoPort;
 
@@ -12,12 +13,12 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
         this.loadEarthquakeInfoPort = loadEarthquakeInfoPort;
     }
 
-    public List<String> getInfoBetweenDates(String startDate, String endDate) {
+    public List<EarthquakeInfo> getInfoBetweenDates(String startDate, String endDate) {
         return loadEarthquakeInfoPort.getInfoBetweenDates(startDate,endDate);
     }
 
     @Override
-    public List<String> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude) {
+    public List<EarthquakeInfo> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude) {
         return loadEarthquakeInfoPort.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude);
     }
 }
