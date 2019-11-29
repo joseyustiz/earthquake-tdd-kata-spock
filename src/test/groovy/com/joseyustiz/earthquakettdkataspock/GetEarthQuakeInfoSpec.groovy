@@ -2,7 +2,6 @@ package com.joseyustiz.earthquakettdkataspock
 
 import spock.lang.Specification
 
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.stream.Collectors
 
@@ -10,7 +9,7 @@ class GetEarthquakeInfoSpec extends Specification {
 
     def "there is no info when there was no earthquake between two dates"() {
         given:
-        GetEarthquakeInfoUseCase earthquakeInfoService = new GetEarthquakeInfoService();
+        GetEarthquakeInfoUseCase earthquakeInfoService = new GetEarthquakeInfoService(new EarthquakeInfoInMemoryDatabaseAdapter());
         def startDate = "2019-10-13"
         def endDate = "2019-10-13"
 
@@ -23,7 +22,7 @@ class GetEarthquakeInfoSpec extends Specification {
 
     def "get earthquake info if there was at least one earthquake between two dates"(){
         given:
-        GetEarthquakeInfoUseCase earthquakeInfoService = new GetEarthquakeInfoService();
+        GetEarthquakeInfoUseCase earthquakeInfoService = new GetEarthquakeInfoService(new EarthquakeInfoInMemoryDatabaseAdapter());
         def startDate = "2019-10-13"
         def endDate = "2019-10-14"
 
@@ -37,46 +36,61 @@ class GetEarthquakeInfoSpec extends Specification {
 
     def "get earthquake info from database service between two dates"(){
         given:
-        def earthquakeDatabaseService = Mock(LoadEarthquakeInfoPort)
-        earthquakeDatabaseService.getInfoBetweenDates(_,_) << ["Earthquake 1", "Earthquake 2"]
-        GetEarthquakeInfoUseCase earthquakeInfoService = new GetEarthquakeInfoService();
+        def startDate = "2019-10-13"
+        def endDate = "2019-10-15"
+        GetEarthquakeInfoUseCase earthquakeInfoService = new GetEarthquakeInfoService(new EarthquakeInfoInMemoryDatabaseAdapter());
 
         when:
-        def earthquakesInfo = earthquakeDatabaseService.getInfoBetweenDates(_, _)
+        def earthquakesInfo = earthquakeInfoService.getInfoBetweenDates(startDate, endDate)
+
+        then:
         earthquakesInfo == ["Earthquake 1", "Earthquake 2"]
+
     }
     interface LoadEarthquakeInfoPort{
 
         List<String> getInfoBetweenDates(String startDate, String endDate)
     }
-    class EarthquakeInfoAdapter implements LoadEarthquakeInfoPort{
+    class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfoPort{
+        private Map<LocalDate, List<String>> earthquakes;
 
+        EarthquakeInfoInMemoryDatabaseAdapter() {
+            this.earthquakes = new HashMap();
+            earthquakes.put(LocalDate.parse("2019-10-14"),Collections.singletonList("Earthquake 1"));
+            earthquakes.put(LocalDate.parse("2019-10-15"),Collections.singletonList("Earthquake 2"));
+        }
+
+        @Override
+        List<String> getInfoBetweenDates(String startDate, String endDate) {
+            LocalDate sDate= LocalDate.parse(startDate);
+            LocalDate eDate= LocalDate.parse(endDate).plusDays(1);
+
+            List<String> earthquakeInfoInDateRange = new ArrayList();
+
+            for (LocalDate date : getDateRange(sDate, eDate)){
+                if(earthquakes.containsKey(date))
+                    earthquakeInfoInDateRange.addAll(earthquakes.get(date));
+            }
+            Collections.sort(earthquakeInfoInDateRange);
+            return earthquakeInfoInDateRange;
+        }
+
+        private Set<LocalDate> getDateRange(LocalDate sDate, LocalDate eDate) {
+            sDate.datesUntil(eDate).collect(Collectors.toSet())
+        }
     }
     interface GetEarthquakeInfoUseCase {
         List<String> getInfoBetweenDates(String startDate, String endDate);
     }
 
     class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
-        private Map<LocalDate, List<String>> earthquakes;
-        GetEarthquakeInfoService() {
-            this.earthquakes = new HashMap();
-            earthquakes.put(LocalDate.parse("2019-10-14"),Collections.singletonList("Earthquake 1"));
+        LoadEarthquakeInfoPort loadEarthquakeInfoPort;
+        GetEarthquakeInfoService(LoadEarthquakeInfoPort loadEarthquakeInfoPort) {
+            this.loadEarthquakeInfoPort = loadEarthquakeInfoPort;
         }
 
         List<String> getInfoBetweenDates(String startDate, String endDate) {
-            LocalDate sDate= LocalDate.parse(startDate);
-            LocalDate eDate= LocalDate.parse(endDate).plusDays(1);
-
-            Set<LocalDate> datesRange = sDate.datesUntil(eDate).collect(Collectors.toSet());
-            System.out.println(datesRange);
-
-            List<String> earthquakeInfoInDateRange = new ArrayList();
-
-            for (LocalDate date : datesRange){
-                if(earthquakes.containsKey(date))
-                earthquakeInfoInDateRange.addAll(earthquakes.get(date));
-            }
-            return earthquakeInfoInDateRange;
+            loadEarthquakeInfoPort.getInfoBetweenDates(startDate,endDate);
         }
     }
 }
