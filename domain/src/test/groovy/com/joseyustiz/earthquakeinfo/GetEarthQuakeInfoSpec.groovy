@@ -4,13 +4,20 @@ import com.joseyustiz.earthquakeinfo.application.port.in.GetEarthquakeInfoUseCas
 import com.joseyustiz.earthquakeinfo.application.service.GetEarthquakeInfoService
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Subject
+import spock.lang.Unroll
 
 import static java.time.LocalDate.parse
 
 class GetEarthquakeInfoSpec extends Specification {
-    @Shared private GetEarthquakeInfoUseCase earthquakeInfoService;
-    @Shared private def earthquake1 = new EarthquakeInfo("Earthquake 1", parse("2019-10-14"), 6.0)
-    @Shared private def earthquake2 = new EarthquakeInfo("Earthquake 2", parse("2019-10-15"), 7.0)
+    @Subject
+    @Shared
+    private GetEarthquakeInfoUseCase earthquakeInfoService;
+    @Shared
+    private def earthquake1 = new EarthquakeInfo("Earthquake 1", parse("2019-10-14"), 6.0)
+    @Shared
+    private def earthquake2 = new EarthquakeInfo("Earthquake 2", parse("2019-10-15"), 7.0)
+
     def setupSpec() {
 
         def inMemoryDB = new EarthquakeInfoInMemoryDatabaseAdapter()
@@ -31,7 +38,7 @@ class GetEarthquakeInfoSpec extends Specification {
         earthquakesInfo.isEmpty()
     }
 
-    def "get earthquake info if there was at least one earthquake between two dates"(){
+    def "get earthquake info if there was at least one earthquake between two dates"() {
         given:
         def startDate = "2019-10-13"
         def endDate = "2019-10-14"
@@ -44,7 +51,7 @@ class GetEarthquakeInfoSpec extends Specification {
 
     }
 
-    def "get earthquake info from database service between two dates"(){
+    def "get earthquake info from database service between two dates"() {
         given:
         def startDate = "2019-10-13"
         def endDate = "2019-10-15"
@@ -57,16 +64,18 @@ class GetEarthquakeInfoSpec extends Specification {
 
     }
 
-    def "get earthquake info between two magnitudes from database service"(){
-        given:
-        def minMagnitude = 6.5
-        def maxMagnitude = 7.0
+    @Unroll
+    def "#howManyEarthquakeInfoThereAre between the magnitudes: '#minMagnitude' and '#maxMagnitude' from database service"() {
+        expect:
+        earthquakeInfoService.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude) == earthquakesInfo
 
-        when:
-        def earthquakesInfo = earthquakeInfoService.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude)
+        where:
+        minMagnitude | maxMagnitude | earthquakesInfo
+        1.5          | 2.0          | []
+        6.5          | 7.0          | [earthquake2]
+        6.0          | 7.0          | [earthquake1, earthquake2]
 
-        then:
-        earthquakesInfo == [earthquake2]
+        howManyEarthquakeInfoThereAre = earthquakesInfo.isEmpty() ? "There is no earthquake info " :
+                "There is/are info of " + earthquakesInfo.size() + " earthquake(s)"
     }
-
 }
