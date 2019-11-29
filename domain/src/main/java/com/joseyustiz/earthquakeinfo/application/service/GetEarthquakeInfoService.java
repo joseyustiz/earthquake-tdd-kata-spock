@@ -30,8 +30,7 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
     @Override
     public List<EarthquakeInfo> getInfoBetweenTwoDateRanges(String startDateRange1, String endDateRange1, String startDateRange2, String endDateRange2) {
         Set<EarthquakeInfo> infoBetweenDatesR1 = new HashSet<>(loadEarthquakeInfoPort.getInfoBetweenDates(startDateRange1, endDateRange1));
-        List<EarthquakeInfo> infoBetweenDates = loadEarthquakeInfoPort.getInfoBetweenDates(startDateRange2, endDateRange2);
-        infoBetweenDatesR1.addAll(infoBetweenDates);
+        infoBetweenDatesR1.addAll(loadEarthquakeInfoPort.getInfoBetweenDates(startDateRange2, endDateRange2));
         return infoBetweenDatesR1.stream().sorted(comparing(EarthquakeInfo::getDate)).collect(toList());
     }
 }

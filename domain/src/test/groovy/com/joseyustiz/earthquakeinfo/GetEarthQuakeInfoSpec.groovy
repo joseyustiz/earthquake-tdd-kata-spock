@@ -30,12 +30,12 @@ class GetEarthquakeInfoSpec extends Specification {
         earthquake2 = new EarthquakeInfo("Earthquake 2", parse("2019-10-15"), 7.0)
 
         earthquake3 = new EarthquakeInfo("Earthquake 3", parse("2019-10-16"), 8.0)
-        earthquake4 = new EarthquakeInfo("Earthquake 4", parse("2019-10-16"), 9.0)
+        earthquake4 = new EarthquakeInfo("Earthquake 4", parse("2019-10-17"), 9.0)
 
         mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-13", "2019-10-13") >> []
         mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-13", "2019-10-14") >> [earthquake1]
         mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-13", "2019-10-15") >> [earthquake1, earthquake2]
-        mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-15", "2019-10-16") >> [earthquake2, earthquake3, earthquake4]
+        mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-15", "2019-10-16") >> [earthquake2, earthquake3]
 
         mockedEarthquakeDatabase.getInfoBetweenMagnitudes(1.5, 2.0) >> []
         mockedEarthquakeDatabase.getInfoBetweenMagnitudes(6.5, 7.0) >> [earthquake2]
@@ -43,8 +43,8 @@ class GetEarthquakeInfoSpec extends Specification {
 
         mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-13", "2019-10-13", "2019-10-13") >> []
         mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-14", "2019-10-13", "2019-10-14") >> [earthquake1]
-        mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-15", "2019-10-13", "2019-10-14") >> [earthquake1,earthquake2]
-        mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-14", "2019-10-15", "2019-10-16") >> [earthquake1,earthquake2,earthquake3,earthquake4]
+        mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-15", "2019-10-13", "2019-10-14") >> [earthquake1, earthquake2]
+        mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-14", "2019-10-15", "2019-10-16") >> [earthquake1, earthquake2, earthquake3]
 
         earthquakeInfoService = new GetEarthquakeInfoService(mockedEarthquakeDatabase)
     }
@@ -86,7 +86,7 @@ class GetEarthquakeInfoSpec extends Specification {
         "2019-10-13"    | "2019-10-13"  | "2019-10-13"    | "2019-10-13"  | []
         "2019-10-13"    | "2019-10-14"  | "2019-10-13"    | "2019-10-14"  | [earthquake1]
         "2019-10-13"    | "2019-10-15"  | "2019-10-13"    | "2019-10-14"  | [earthquake1, earthquake2]
-        "2019-10-13"    | "2019-10-14"  | "2019-10-15"    | "2019-10-16"  | [earthquake1,earthquake2,earthquake3,earthquake4]
+        "2019-10-13"    | "2019-10-14"  | "2019-10-15"    | "2019-10-16"  | [earthquake1, earthquake2, earthquake3]
         message = "Retrieved " + earthquakesInfo.size() + " earthquake(s) info given that happened " + earthquakesInfo.size() + " earthquake(s) between " + startDateRange1 + " to " + endDateRange1 + " and " + startDateRange2 + " to " + endDateRange2
     }
 }
