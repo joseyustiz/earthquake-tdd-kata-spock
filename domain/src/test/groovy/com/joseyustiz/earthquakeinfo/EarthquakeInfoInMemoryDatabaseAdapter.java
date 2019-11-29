@@ -36,10 +36,6 @@ public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfo
                 .collect(Collectors.toList());
     }
 
-    private Set<LocalDate> getDateRange(LocalDate sDate, LocalDate eDate) {
-        return sDate.datesUntil(eDate).collect(Collectors.toSet());
-    }
-
     public void addEarthquakeInfo(EarthquakeInfo earthquakesInfo) {
         earthquakes.add(earthquakesInfo);
     }
