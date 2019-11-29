@@ -62,4 +62,16 @@ class GetEarthquakeInfoSpec extends Specification {
         6.0          | 7.0          | [earthquake1, earthquake2]
         message = "Retrieved " + earthquakesInfo.size() + " earthquake(s) info given that happened " + earthquakesInfo.size() + " with magnitude between " + minMagnitude + " to " + maxMagnitude
     }
+
+    @Unroll("#message")
+    def "get earthquakes info that happened between two date ranges"() {
+        expect:
+        earthquakeInfoService.getInfoBetweenTwoDateRanges(startDateRange1, endDateRange1, startDateRange2, endDateRange2) == earthquakesInfo
+
+        where:
+        startDateRange1 | endDateRange1 | startDateRange2 | endDateRange2 | earthquakesInfo
+        "2019-10-13"    | "2019-10-13"  | "2019-10-13"    | "2019-10-13"  | []
+
+        message = "Retrieved " + earthquakesInfo.size() + " earthquake(s) info given that happened " + earthquakesInfo.size() + " earthquake(s) between " + startDateRange1 + " to " + endDateRange1 + " and " + startDateRange2 + " to " + endDateRange2
+    }
 }
