@@ -1,5 +1,6 @@
 package com.joseyustiz.earthquakettdkataspock
 
+import com.joseyustiz.earthquakeinfo.application.port.in.GetEarthquakeInfoUseCase
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -78,9 +79,6 @@ class GetEarthquakeInfoSpec extends Specification {
         private Set<LocalDate> getDateRange(LocalDate sDate, LocalDate eDate) {
             sDate.datesUntil(eDate).collect(Collectors.toSet())
         }
-    }
-    interface GetEarthquakeInfoUseCase {
-        List<String> getInfoBetweenDates(String startDate, String endDate);
     }
 
     class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
