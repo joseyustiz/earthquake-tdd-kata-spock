@@ -1,6 +1,8 @@
-package com.joseyustiz.earthquakettdkataspock
+package com.joseyustiz.earthquake
 
+import com.joseyustiz.earthquake.application.service.GetEarthquakeInfoService
 import com.joseyustiz.earthquakeinfo.application.port.in.GetEarthquakeInfoUseCase
+import com.joseyustiz.earthquakeinfo.application.port.out.LoadEarthquakeInfoPort
 import spock.lang.Specification
 
 import java.time.LocalDate
@@ -48,10 +50,6 @@ class GetEarthquakeInfoSpec extends Specification {
         earthquakesInfo == ["Earthquake 1", "Earthquake 2"]
 
     }
-    interface LoadEarthquakeInfoPort{
-
-        List<String> getInfoBetweenDates(String startDate, String endDate)
-    }
     class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfoPort{
         private Map<LocalDate, List<String>> earthquakes;
 
@@ -81,14 +79,5 @@ class GetEarthquakeInfoSpec extends Specification {
         }
     }
 
-    class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
-        LoadEarthquakeInfoPort loadEarthquakeInfoPort;
-        GetEarthquakeInfoService(LoadEarthquakeInfoPort loadEarthquakeInfoPort) {
-            this.loadEarthquakeInfoPort = loadEarthquakeInfoPort;
-        }
 
-        List<String> getInfoBetweenDates(String startDate, String endDate) {
-            loadEarthquakeInfoPort.getInfoBetweenDates(startDate,endDate);
-        }
-    }
 }
