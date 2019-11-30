@@ -86,7 +86,7 @@ class GetEarthquakeInfoSpec extends Specification {
         message = "Retrieved " + earthquakesInfo.size() + " earthquake(s) info given that happened " + earthquakesInfo.size() + " earthquake(s) between " + startDateRange1 + " to " + endDateRange1 + " and " + startDateRange2 + " to " + endDateRange2
     }
 
-    def "the date ranges are optimizes before requesting earthquakes info"() {
+    def "the date ranges are optimized before requesting earthquakes info"() {
         given:
         LoadEarthquakeInfoPort mockedEarthquakeDatabase2 = Mock(LoadEarthquakeInfoPort)
         GetEarthquakeInfoService earthquakeInfoService2 = new GetEarthquakeInfoService(mockedEarthquakeDatabase2)
@@ -95,13 +95,19 @@ class GetEarthquakeInfoSpec extends Specification {
         earthquakeInfoService2.getInfoBetweenTwoDateRanges(parse(startDateRange1), parse(endDateRange1), parse(startDateRange2), parse(endDateRange2))
 
         then:
-        1 * mockedEarthquakeDatabase2.getInfoBetweenDates(parse(optimusStartDateRange), parse(optimmusEndDateRange)) >> earthquakesInfo
+        callTimes13_13 * mockedEarthquakeDatabase2.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-13")) >> []
+        callTimes13_14 * mockedEarthquakeDatabase2.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-14")) >> [earthquake1]
+        callTimes13_15 * mockedEarthquakeDatabase2.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-15")) >> [earthquake1, earthquake2]
+        callTimes13_16 * mockedEarthquakeDatabase2.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-16")) >> [earthquake1, earthquake2, earthquake3]
+        callTimes16_17 * mockedEarthquakeDatabase2.getInfoBetweenDates(parse("2019-10-16"), parse("2019-10-17")) >> [ earthquake3, earthquake4]
 
         where:
-        startDateRange1 | endDateRange1 | startDateRange2 | endDateRange2 | optimusStartDateRange | optimmusEndDateRange | earthquakesInfo
-        "2019-10-13"    | "2019-10-13"  | "2019-10-13"    | "2019-10-13"  | "2019-10-13"          | "2019-10-13"         | []
-        "2019-10-13"    | "2019-10-14"  | "2019-10-13"    | "2019-10-14"  | "2019-10-13"          | "2019-10-14"         | [earthquake1]
-        "2019-10-13"    | "2019-10-15"  | "2019-10-13"    | "2019-10-14"  | "2019-10-13"          | "2019-10-15"         | [earthquake1, earthquake2]
-        "2019-10-13"    | "2019-10-14"  | "2019-10-15"    | "2019-10-16"  | "2019-10-13"          | "2019-10-16"         | [earthquake1, earthquake2, earthquake3]
+        startDateRange1 | endDateRange1 | startDateRange2 | endDateRange2 | callTimes13_13 | callTimes13_14 | callTimes13_15 | callTimes13_16 | callTimes16_17
+        "2019-10-13"    | "2019-10-13"  | "2019-10-13"    | "2019-10-13"  | 1              | 0              | 0              | 0              | 0
+        "2019-10-13"    | "2019-10-14"  | "2019-10-13"    | "2019-10-14"  | 0              | 1              | 0              | 0              | 0
+        "2019-10-13"    | "2019-10-15"  | "2019-10-13"    | "2019-10-14"  | 0              | 0              | 1              | 0              | 0
+        "2019-10-13"    | "2019-10-14"  | "2019-10-15"    | "2019-10-16"  | 0              | 0              | 0              | 1              | 0
+        "2019-10-13"    | "2019-10-14"  | "2019-10-16"    | "2019-10-17"  | 0              | 1              | 0              | 0              | 1
+        "2019-10-13"    | "2019-10-13"  | "2019-10-16"    | "2019-10-17"  | 1              | 0              | 0              | 0              | 1
     }
 }
