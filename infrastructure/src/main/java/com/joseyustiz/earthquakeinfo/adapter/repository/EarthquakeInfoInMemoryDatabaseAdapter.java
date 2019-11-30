@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static java.time.LocalDate.parse;
 import static java.util.Comparator.comparing;
 
 public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfoPort {
@@ -20,11 +19,10 @@ public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfo
     }
 
     @Override
-    public List<EarthquakeInfo> getInfoBetweenDates(String startDate, String endDate) {
-        LocalDate sDate = parse(startDate);
-        LocalDate eDate = parse(endDate).plusDays(1);
+    public List<EarthquakeInfo> getInfoBetweenDates(LocalDate startDate, LocalDate endDate) {
+        LocalDate eDate = endDate.plusDays(1);
         return earthquakes.stream()
-                .filter(i -> i.getDate().isAfter(sDate) && i.getDate().isBefore(eDate))
+                .filter(i -> i.getDate().isAfter(startDate) && i.getDate().isBefore(eDate))
                 .sorted(comparing(EarthquakeInfo::getDate))
                 .collect(Collectors.toList());
     }

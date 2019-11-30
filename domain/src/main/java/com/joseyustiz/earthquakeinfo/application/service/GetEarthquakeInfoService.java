@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static java.time.LocalDate.parse;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
@@ -22,7 +21,7 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
         this.loadEarthquakeInfoPort = loadEarthquakeInfoPort;
     }
 
-    public List<EarthquakeInfo> getInfoBetweenDates(String startDate, String endDate) {
+    public List<EarthquakeInfo> getInfoBetweenDates(LocalDate startDate, LocalDate endDate) {
         return loadEarthquakeInfoPort.getInfoBetweenDates(startDate,endDate);
     }
 
@@ -32,8 +31,8 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
     }
 
     @Override
-    public List<EarthquakeInfo> getInfoBetweenTwoDateRanges(String startDateRange1, String endDateRange1, String startDateRange2, String endDateRange2) {
-        List<DataRange> dataRanges= getOptimumDateRange(parse(startDateRange1), parse(endDateRange1),parse(startDateRange2), parse(endDateRange2));
+    public List<EarthquakeInfo> getInfoBetweenTwoDateRanges(LocalDate startDateRange1, LocalDate endDateRange1, LocalDate startDateRange2, LocalDate endDateRange2) {
+        List<DataRange> dataRanges= getOptimumDateRange(startDateRange1, endDateRange1, startDateRange2, endDateRange2);
         Set<EarthquakeInfo> earthquakeInfoSet = new HashSet<>();
         for (DataRange dataRange : dataRanges){
             earthquakeInfoSet.addAll(this.getInfoBetweenDates(dataRange.getStartDate(),dataRange.getEndDate()));
@@ -46,25 +45,25 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
         DataRange dataRange;
         if(startDateRange1.isEqual(startDateRange2)){
             dataRange = new DataRange();
-            dataRange.startDate = startDateRange1.toString();
+            dataRange.startDate = startDateRange1;
             if (endDateRange1.isEqual(endDateRange2) || endDateRange1.isAfter(endDateRange2) ){
-                dataRange.endDate = endDateRange1.toString();
+                dataRange.endDate = endDateRange1;
             } else {
-                dataRange.endDate = endDateRange2.toString();
+                dataRange.endDate = endDateRange2;
             }
             optimumDateRanges.add(dataRange);
         } else if(startDateRange1.isBefore(startDateRange2)){
             dataRange = new DataRange();
-            dataRange.startDate = startDateRange1.toString();
+            dataRange.startDate = startDateRange1;
             if(endDateRange1.isEqual(startDateRange2.minusDays(1)) || endDateRange1.isAfter(startDateRange2)){
-                dataRange.endDate = endDateRange2.toString();
+                dataRange.endDate = endDateRange2;
                 optimumDateRanges.add(dataRange);
             }else{
-                dataRange.endDate = endDateRange1.toString();
+                dataRange.endDate = endDateRange1;
                 optimumDateRanges.add(dataRange);
                 DataRange dataRange2 = new DataRange();
-                dataRange2.startDate=startDateRange2.toString();
-                dataRange2.endDate=endDateRange2.toString();
+                dataRange2.startDate=startDateRange2;
+                dataRange2.endDate=endDateRange2;
                 optimumDateRanges.add(dataRange2);
             }
 
@@ -74,7 +73,7 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
 
     @Getter
     private class DataRange {
-        String startDate;
-        String endDate;
+        LocalDate startDate;
+        LocalDate endDate;
     }
 }

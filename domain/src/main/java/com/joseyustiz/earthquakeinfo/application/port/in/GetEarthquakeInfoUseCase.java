@@ -2,12 +2,13 @@ package com.joseyustiz.earthquakeinfo.application.port.in;
 
 import com.joseyustiz.earthquakeinfo.EarthquakeInfo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface GetEarthquakeInfoUseCase {
-    List<EarthquakeInfo> getInfoBetweenDates(String startDate, String endDate);
+    List<EarthquakeInfo> getInfoBetweenDates(LocalDate startDate, LocalDate endDate);
 
     List<EarthquakeInfo> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude);
 
-    List<EarthquakeInfo> getInfoBetweenTwoDateRanges(String startDateRange1, String endDateRange1, String startDateRange2, String endDateRange2);
+    List<EarthquakeInfo> getInfoBetweenTwoDateRanges(LocalDate startDateRange1, LocalDate endDateRange1, LocalDate startDateRange2, LocalDate endDateRange2);
 }

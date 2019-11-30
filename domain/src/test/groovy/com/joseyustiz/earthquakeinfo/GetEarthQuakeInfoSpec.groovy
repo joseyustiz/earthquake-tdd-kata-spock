@@ -32,11 +32,11 @@ class GetEarthquakeInfoSpec extends Specification {
         earthquake3 = new EarthquakeInfo("Earthquake 3", parse("2019-10-16"), 8.0)
         earthquake4 = new EarthquakeInfo("Earthquake 4", parse("2019-10-17"), 9.0)
 
-        mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-13", "2019-10-13") >> []
-        mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-13", "2019-10-14") >> [earthquake1]
-        mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-13", "2019-10-15") >> [earthquake1, earthquake2]
-        mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-15", "2019-10-16") >> [earthquake2, earthquake3]
-        mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-13", "2019-10-16") >> [earthquake1, earthquake2, earthquake3]
+        mockedEarthquakeDatabase.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-13")) >> []
+        mockedEarthquakeDatabase.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-14")) >> [earthquake1]
+        mockedEarthquakeDatabase.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-15")) >> [earthquake1, earthquake2]
+        mockedEarthquakeDatabase.getInfoBetweenDates(parse("2019-10-15"), parse("2019-10-16")) >> [earthquake2, earthquake3]
+        mockedEarthquakeDatabase.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-16")) >> [earthquake1, earthquake2, earthquake3]
 
         mockedEarthquakeDatabase.getInfoBetweenMagnitudes(1.5, 2.0) >> []
         mockedEarthquakeDatabase.getInfoBetweenMagnitudes(6.5, 7.0) >> [earthquake2]
@@ -48,7 +48,7 @@ class GetEarthquakeInfoSpec extends Specification {
     @Unroll("#message")
     def "get earthquake info from database service between two dates"() {
         expect:
-        earthquakeInfoService.getInfoBetweenDates(startDate, endDate) == earthquakesInfo
+        earthquakeInfoService.getInfoBetweenDates(parse(startDate), parse(endDate)) == earthquakesInfo
 
         where:
         startDate    | endDate      | earthquakesInfo
@@ -75,7 +75,7 @@ class GetEarthquakeInfoSpec extends Specification {
     @Unroll("#message")
     def "get earthquakes info that happened between two date ranges"() {
         expect:
-        earthquakeInfoService.getInfoBetweenTwoDateRanges(startDateRange1, endDateRange1, startDateRange2, endDateRange2) == earthquakesInfo
+        earthquakeInfoService.getInfoBetweenTwoDateRanges(parse(startDateRange1), parse(endDateRange1), parse(startDateRange2), parse(endDateRange2)) == earthquakesInfo
 
         where:
         startDateRange1 | endDateRange1 | startDateRange2 | endDateRange2 | earthquakesInfo
@@ -92,10 +92,10 @@ class GetEarthquakeInfoSpec extends Specification {
         GetEarthquakeInfoService earthquakeInfoService2 = new GetEarthquakeInfoService(mockedEarthquakeDatabase2)
 
         when:
-        earthquakeInfoService2.getInfoBetweenTwoDateRanges(startDateRange1, endDateRange1, startDateRange2, endDateRange2)
+        earthquakeInfoService2.getInfoBetweenTwoDateRanges(parse(startDateRange1), parse(endDateRange1), parse(startDateRange2), parse(endDateRange2))
 
         then:
-        1 * mockedEarthquakeDatabase2.getInfoBetweenDates(optimusStartDateRange, optimmusEndDateRange) >> earthquakesInfo
+        1 * mockedEarthquakeDatabase2.getInfoBetweenDates(parse(optimusStartDateRange), parse(optimmusEndDateRange)) >> earthquakesInfo
 
         where:
         startDateRange1 | endDateRange1 | startDateRange2 | endDateRange2 | optimusStartDateRange | optimmusEndDateRange | earthquakesInfo
