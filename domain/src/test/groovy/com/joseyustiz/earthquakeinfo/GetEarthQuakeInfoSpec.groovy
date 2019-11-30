@@ -36,6 +36,7 @@ class GetEarthquakeInfoSpec extends Specification {
         mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-13", "2019-10-14") >> [earthquake1]
         mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-13", "2019-10-15") >> [earthquake1, earthquake2]
         mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-15", "2019-10-16") >> [earthquake2, earthquake3]
+        mockedEarthquakeDatabase.getInfoBetweenDates("2019-10-13", "2019-10-16") >> [earthquake1, earthquake2, earthquake3]
 
         mockedEarthquakeDatabase.getInfoBetweenMagnitudes(1.5, 2.0) >> []
         mockedEarthquakeDatabase.getInfoBetweenMagnitudes(6.5, 7.0) >> [earthquake2]
