@@ -41,11 +41,6 @@ class GetEarthquakeInfoSpec extends Specification {
         mockedEarthquakeDatabase.getInfoBetweenMagnitudes(6.5, 7.0) >> [earthquake2]
         mockedEarthquakeDatabase.getInfoBetweenMagnitudes(6.0, 7.0) >> [earthquake1, earthquake2]
 
-        mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-13", "2019-10-13", "2019-10-13") >> []
-        mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-14", "2019-10-13", "2019-10-14") >> [earthquake1]
-        mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-15", "2019-10-13", "2019-10-14") >> [earthquake1, earthquake2]
-        mockedEarthquakeDatabase.getInfoBetweenTwoDateRanges("2019-10-13", "2019-10-14", "2019-10-15", "2019-10-16") >> [earthquake1, earthquake2, earthquake3]
-
         earthquakeInfoService = new GetEarthquakeInfoService(mockedEarthquakeDatabase)
     }
 
@@ -88,5 +83,24 @@ class GetEarthquakeInfoSpec extends Specification {
         "2019-10-13"    | "2019-10-15"  | "2019-10-13"    | "2019-10-14"  | [earthquake1, earthquake2]
         "2019-10-13"    | "2019-10-14"  | "2019-10-15"    | "2019-10-16"  | [earthquake1, earthquake2, earthquake3]
         message = "Retrieved " + earthquakesInfo.size() + " earthquake(s) info given that happened " + earthquakesInfo.size() + " earthquake(s) between " + startDateRange1 + " to " + endDateRange1 + " and " + startDateRange2 + " to " + endDateRange2
+    }
+
+    def "the date ranges are optimizes before requesting earthquakes info"() {
+        given:
+        LoadEarthquakeInfoPort mockedEarthquakeDatabase2 = Mock(LoadEarthquakeInfoPort)
+        GetEarthquakeInfoService earthquakeInfoService2 = new GetEarthquakeInfoService(mockedEarthquakeDatabase2)
+
+        when:
+        earthquakeInfoService2.getInfoBetweenTwoDateRanges(startDateRange1, endDateRange1, startDateRange2, endDateRange2)
+
+        then:
+        1 * mockedEarthquakeDatabase2.getInfoBetweenDates(optimusStartDateRange, optimmusEndDateRange) >> earthquakesInfo
+
+        where:
+        startDateRange1 | endDateRange1 | startDateRange2 | endDateRange2 | optimusStartDateRange | optimmusEndDateRange | earthquakesInfo
+        "2019-10-13"    | "2019-10-13"  | "2019-10-13"    | "2019-10-13"  | "2019-10-13"          | "2019-10-13"         | []
+        "2019-10-13"    | "2019-10-14"  | "2019-10-13"    | "2019-10-14"  | "2019-10-13"          | "2019-10-14"         | [earthquake1]
+        "2019-10-13"    | "2019-10-15"  | "2019-10-13"    | "2019-10-14"  | "2019-10-13"          | "2019-10-15"         | [earthquake1, earthquake2]
+        "2019-10-13"    | "2019-10-14"  | "2019-10-15"    | "2019-10-16"  | "2019-10-13"          | "2019-10-16"         | [earthquake1, earthquake2, earthquake3]
     }
 }
