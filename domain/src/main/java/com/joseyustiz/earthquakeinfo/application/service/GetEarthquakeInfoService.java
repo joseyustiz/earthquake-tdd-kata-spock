@@ -48,6 +48,11 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
                 .collect(Collectors.toUnmodifiableList());
     }
 
+    @Override
+    public List getInfoByTwoCountriesNamesAndBetweenDates(String country1, String country2, LocalDate startDate, LocalDate endDate) {
+        return null;
+    }
+
     private List<DataRange> getOptimumDateRange(LocalDate startDateRange1, LocalDate endDateRange1, LocalDate startDateRange2, LocalDate endDateRange2) {
         List<DataRange> optimumDateRanges = new ArrayList<>();
         DataRange dataRange;

@@ -127,4 +127,20 @@ class GetEarthquakeInfoSpec extends Specification {
 
         message = "Retrieved " + earthquakesInfo.size() + " earthquake(s) info given that happened " + earthquakesInfo.size() + " earthquake(s) at " + country
     }
+
+    @Unroll("#message")
+    def "get earthquakes info of two countries name and between two dates"() {
+        expect:
+        earthquakeInfoService.getInfoByTwoCountriesNamesAndBetweenDates(country1, country2, parse(startDate), parse(endDate)) == earthquakesInfo
+
+        where:
+        country1 | country2    | startDate    | endDate      | earthquakesInfo
+        "Aruba"  | "Argentina" | "2019-10-13" | "2019-10-13" | []
+        "Japan"  | "Mexico"    | "2019-10-13" | "2019-10-13" | []
+        "Mexico" | "Chile"     | "2019-10-13" | "2019-10-14" | [earthquake1]
+        "Chile"  | "Aruba"     | "2019-10-13" | "2019-10-15" | [earthquake2]
+        "Japan"  | "Mexico"    | "2019-10-13" | "2019-10-16" | [earthquake1, earthquake3]
+
+        message = "Retrieved " + earthquakesInfo.size() + " earthquake(s) info given that happened " + earthquakesInfo.size() + " earthquake(s) at " + country1 + " and "+ country2
+    }
 }

@@ -13,4 +13,6 @@ public interface GetEarthquakeInfoUseCase {
     List<EarthquakeInfo> getInfoBetweenTwoDateRanges(LocalDate startDateRange1, LocalDate endDateRange1, LocalDate startDateRange2, LocalDate endDateRange2);
 
     List<EarthquakeInfo> getInfoByCountry(String country);
+
+    List getInfoByTwoCountriesNamesAndBetweenDates(String country1, String country2, LocalDate startDate, LocalDate endDate);
 }
