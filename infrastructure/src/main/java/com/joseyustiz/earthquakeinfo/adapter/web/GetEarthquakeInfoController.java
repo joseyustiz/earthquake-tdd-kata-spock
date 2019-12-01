@@ -7,13 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 public class GetEarthquakeInfoController {
     private final GetEarthquakeInfoUseCase service;
 
-    public List<EarthquakeInfo> getInfoBetweenDates(LocalDate startDate, LocalDate endDate) {
-        return service.getInfoBetweenDates(startDate,endDate);
+    public List<String> getInfoBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return service.getInfoBetweenDates(startDate, endDate).stream().map(EarthquakeInfo::getInfo).collect(Collectors.toUnmodifiableList());
     }
 }

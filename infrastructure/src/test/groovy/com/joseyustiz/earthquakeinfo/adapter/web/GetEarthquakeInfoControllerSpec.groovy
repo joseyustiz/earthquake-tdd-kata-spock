@@ -1,15 +1,20 @@
 package com.joseyustiz.earthquakeinfo.adapter.web
 
-
 import com.joseyustiz.earthquakeinfo.application.port.in.GetEarthquakeInfoUseCase
 import com.joseyustiz.earthquakeinfo.model.EarthquakeInfo
 import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Subject
+import spock.lang.Unroll
 
 import static java.time.LocalDate.parse
 
 class GetEarthquakeInfoControllerSpec extends Specification {
-
+    @Subject
+    @Shared
+    private def controller
+    @Shared
+    private def service
     @Shared
     private def earthquake1
     @Shared
@@ -27,21 +32,24 @@ class GetEarthquakeInfoControllerSpec extends Specification {
         earthquake3 = new EarthquakeInfo("Earthquake 3", parse("2019-10-16"), 8.0, "Japan")
         earthquake4 = new EarthquakeInfo("Earthquake 4", parse("2019-10-17"), 9.0, "Japan")
 
+        service = Mock(GetEarthquakeInfoUseCase)
+        service.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-13")) >> []
+        service.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-14")) >> [earthquake1]
+        service.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-15")) >> [earthquake1,earthquake2]
 
+        controller = new GetEarthquakeInfoController(service)
     }
 
-    def "get earthquake info from database service between two dates by calling REST API"() {
-        given:
-        def service = Mock(GetEarthquakeInfoUseCase)
-        service.getInfoBetweenDates(parse(startDate),parse(endDate)) >> earthquakesInfo
-        def controller = new GetEarthquakeInfoController(service)
-
+    @Unroll("#message")
+    def "get earthquake info from database service between two dates by calling the Controller"() {
         expect:
-        controller.getInfoBetweenDates(parse(startDate),parse(endDate)) == earthquakesInfo
+        controller.getInfoBetweenDates(parse(startDate), parse(endDate)) == earthquakesInfoWebResponse
+
         where:
-        startDate    | endDate      | earthquakesInfo
+        startDate    | endDate      | earthquakesInfoWebResponse
         "2019-10-13" | "2019-10-13" | []
-        "2019-10-13" | "2019-10-14" | [earthquake1]
-        "2019-10-13" | "2019-10-15" | [earthquake1, earthquake2]
+        "2019-10-13" | "2019-10-14" | ["Earthquake 1"]
+        "2019-10-13" | "2019-10-15" | ["Earthquake 1", "Earthquake 2"]
+        message = "Controller returned " + earthquakesInfoWebResponse.size() + " earthquake(s) info given that happened " + earthquakesInfoWebResponse.size() + " from " + startDate + " to " + endDate
     }
 }
