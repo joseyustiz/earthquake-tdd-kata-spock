@@ -37,6 +37,10 @@ class GetEarthquakeInfoControllerSpec extends Specification {
         service.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-14")) >> [earthquake1]
         service.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-15")) >> [earthquake1, earthquake2]
 
+        service.getInfoBetweenMagnitudes(1.5, 2.0) >> []
+        service.getInfoBetweenMagnitudes(6.5, 7.0) >> [earthquake2]
+        service.getInfoBetweenMagnitudes(6.0, 7.0) >> [earthquake1, earthquake2]
+
         controller = new GetEarthquakeInfoController(service)
     }
 

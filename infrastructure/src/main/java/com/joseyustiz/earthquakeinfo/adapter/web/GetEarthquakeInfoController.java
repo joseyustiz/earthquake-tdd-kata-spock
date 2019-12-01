@@ -19,6 +19,6 @@ public class GetEarthquakeInfoController {
     }
 
     public List<String> getInfoBetweenMagnitud(double minMagnitude, double maxMagnitude) {
-        return null;
+        return service.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude).stream().map(EarthquakeInfo::getInfo).collect(Collectors.toUnmodifiableList());
     }
 }
