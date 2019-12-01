@@ -58,7 +58,7 @@ class GetEarthquakeInfoControllerSpec extends Specification {
     }
 
     @Unroll("#message")
-    def "get earthquake info between two magnitudes by colling the Controller"() {
+    def "get earthquake info between two magnitudes by calling the Controller"() {
         expect:
         controller.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude) == earthquakesInfoWebResponse
 
