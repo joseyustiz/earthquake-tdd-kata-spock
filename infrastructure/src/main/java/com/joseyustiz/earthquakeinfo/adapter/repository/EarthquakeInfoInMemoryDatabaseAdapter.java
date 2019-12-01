@@ -14,7 +14,7 @@ import static java.util.Comparator.comparing;
 public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfoPort {
     private Set<EarthquakeInfo> earthquakes;
 
-    EarthquakeInfoInMemoryDatabaseAdapter() {
+    public EarthquakeInfoInMemoryDatabaseAdapter() {
         this.earthquakes = new HashSet<>();
     }
 
