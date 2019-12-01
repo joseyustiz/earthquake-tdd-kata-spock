@@ -13,6 +13,8 @@ repositories {
 }
 
 dependencies {
+    implementation project(':common')
+
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
     testImplementation 'org.spockframework:spock-core:1.3-groovy-2.5'
