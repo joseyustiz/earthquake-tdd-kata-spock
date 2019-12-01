@@ -1,4 +1,4 @@
-package com.joseyustiz.earthquake;
+package com.joseyustiz.earthquakeinfo.adapter.web;
 
 import com.joseyustiz.earthquakeinfo.adapter.repository.EarthquakeInfoInMemoryDatabaseAdapter;
 import com.joseyustiz.earthquakeinfo.application.port.in.GetEarthquakeInfoUseCase;
