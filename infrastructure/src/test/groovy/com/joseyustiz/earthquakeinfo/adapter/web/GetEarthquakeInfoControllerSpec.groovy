@@ -14,7 +14,7 @@ class GetEarthquakeInfoControllerSpec extends Specification {
     @Shared
     private GetEarthquakeInfoController controller
     @Shared
-    private def service
+    private def mockedService
     @Shared
     private def earthquake1
     @Shared
@@ -32,16 +32,16 @@ class GetEarthquakeInfoControllerSpec extends Specification {
         earthquake3 = new EarthquakeInfo("Earthquake 3", parse("2019-10-16"), 8.0, "Japan")
         earthquake4 = new EarthquakeInfo("Earthquake 4", parse("2019-10-17"), 9.0, "Japan")
 
-        service = Mock(GetEarthquakeInfoUseCase)
-        service.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-13")) >> []
-        service.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-14")) >> [earthquake1]
-        service.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-15")) >> [earthquake1, earthquake2]
+        mockedService = Mock(GetEarthquakeInfoUseCase)
+        mockedService.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-13")) >> []
+        mockedService.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-14")) >> [earthquake1]
+        mockedService.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-15")) >> [earthquake1, earthquake2]
 
-        service.getInfoBetweenMagnitudes(1.5, 2.0) >> []
-        service.getInfoBetweenMagnitudes(6.5, 7.0) >> [earthquake2]
-        service.getInfoBetweenMagnitudes(6.0, 7.0) >> [earthquake1, earthquake2]
+        mockedService.getInfoBetweenMagnitudes(1.5, 2.0) >> []
+        mockedService.getInfoBetweenMagnitudes(6.5, 7.0) >> [earthquake2]
+        mockedService.getInfoBetweenMagnitudes(6.0, 7.0) >> [earthquake1, earthquake2]
 
-        controller = new GetEarthquakeInfoController(service)
+        controller = new GetEarthquakeInfoController(mockedService)
     }
 
     @Unroll("#message")
