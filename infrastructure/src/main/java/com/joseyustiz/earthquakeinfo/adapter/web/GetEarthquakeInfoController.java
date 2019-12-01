@@ -13,7 +13,7 @@ import java.util.List;
 public class GetEarthquakeInfoController {
     private final GetEarthquakeInfoUseCase service;
 
-    public List<EarthquakeInfo> getInfoBetweenDates(LocalDate localDate, LocalDate localDate1) {
-        return null;
+    public List<EarthquakeInfo> getInfoBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return service.getInfoBetweenDates(startDate,endDate);
     }
 }
