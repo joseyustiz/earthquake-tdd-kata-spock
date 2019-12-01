@@ -131,16 +131,16 @@ class GetEarthquakeInfoSpec extends Specification {
     @Unroll("#message")
     def "get amount of earthquakes that happened at two countries between two dates"() {
         expect:
-        earthquakeInfoService.getInfoByTwoCountriesNamesAndBetweenDates(country1, country2, parse(startDate), parse(endDate)).size() == earthquakesInfoSize
+        earthquakeInfoService.getAmountAtTwoCountriesNamesAndBetweenDates(country1, country2, parse(startDate), parse(endDate)) == earthquakesAmount
 
         where:
-        country1 | country2    | startDate    | endDate      | earthquakesInfoSize
+        country1 | country2    | startDate    | endDate      | earthquakesAmount
         "Aruba"  | "Argentina" | "2019-10-13" | "2019-10-13" | 0
         "Japan"  | "Mexico"    | "2019-10-13" | "2019-10-13" | 0
         "Mexico" | "Chile"     | "2019-10-13" | "2019-10-14" | 1
         "Chile"  | "Aruba"     | "2019-10-13" | "2019-10-15" | 1
         "Japan"  | "Mexico"    | "2019-10-13" | "2019-10-16" | 2
 
-        message = "Retrieved the amount of " + earthquakesInfoSize + " earthquake(s) that happened at " + country1 + " and " + country2 + " between " + startDate + " and " + endDate
+        message = "Retrieved the amount of " + earthquakesAmount + " earthquake(s) that happened at " + country1 + " and " + country2 + " between " + startDate + " and " + endDate
     }
 }
