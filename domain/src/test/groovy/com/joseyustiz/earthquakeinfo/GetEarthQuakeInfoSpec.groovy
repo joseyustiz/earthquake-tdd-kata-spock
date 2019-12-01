@@ -126,6 +126,5 @@ class GetEarthquakeInfoSpec extends Specification {
         "Japan"  | [earthquake3, earthquake4]
 
         message = "Retrieved " + earthquakesInfo.size() + " earthquake(s) info given that happened " + earthquakesInfo.size() + " earthquake(s) at " + country
-
     }
 }

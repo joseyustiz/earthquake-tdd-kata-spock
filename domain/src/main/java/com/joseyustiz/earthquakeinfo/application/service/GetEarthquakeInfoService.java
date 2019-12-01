@@ -43,7 +43,7 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
 
     @Override
     public List<EarthquakeInfo> getInfoByCountry(String country) {
-        return loadEarthquakeInfoPort.getAllEarthquakesInfo().stream()
+        return loadEarthquakeInfoPort.getAllEarthquakesInfo().parallelStream()
                 .filter(e ->e.getCountry().equals(country))
                 .collect(Collectors.toUnmodifiableList());
     }
