@@ -1,4 +1,4 @@
-package com.joseyustiz.earthquakeinfo;
+package com.joseyustiz.earthquakeinfo.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString
 public class EarthquakeInfo {
-    private String info;
-    private LocalDate date;
+    private String info;    private LocalDate date;
     private double magnitude;
 }

@@ -1,6 +1,6 @@
 package com.joseyustiz.earthquakeinfo.application.port.in;
 
-import com.joseyustiz.earthquakeinfo.EarthquakeInfo;
+import com.joseyustiz.earthquakeinfo.model.EarthquakeInfo;
 
 import java.time.LocalDate;
 import java.util.List;

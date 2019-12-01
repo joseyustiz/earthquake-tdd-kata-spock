@@ -1,8 +1,8 @@
 package com.joseyustiz.earthquakeinfo.application.service;
 
-import com.joseyustiz.earthquakeinfo.EarthquakeInfo;
 import com.joseyustiz.earthquakeinfo.application.port.in.GetEarthquakeInfoUseCase;
 import com.joseyustiz.earthquakeinfo.application.port.out.LoadEarthquakeInfoPort;
+import com.joseyustiz.earthquakeinfo.model.EarthquakeInfo;
 import lombok.Getter;
 
 import java.time.LocalDate;

@@ -3,6 +3,7 @@ package com.joseyustiz.earthquakeinfo
 import com.joseyustiz.earthquakeinfo.application.port.in.GetEarthquakeInfoUseCase
 import com.joseyustiz.earthquakeinfo.application.port.out.LoadEarthquakeInfoPort
 import com.joseyustiz.earthquakeinfo.application.service.GetEarthquakeInfoService
+import com.joseyustiz.earthquakeinfo.model.EarthquakeInfo
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
