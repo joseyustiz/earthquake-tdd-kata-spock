@@ -23,7 +23,7 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
     }
 
     public List<EarthquakeInfo> getInfoBetweenDates(LocalDate startDate, LocalDate endDate) {
-        return loadEarthquakeInfoPort.getInfoBetweenDates(startDate,endDate);
+        return loadEarthquakeInfoPort.getInfoBetweenDates(startDate, endDate);
     }
 
     @Override
@@ -33,10 +33,10 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
 
     @Override
     public List<EarthquakeInfo> getInfoBetweenTwoDateRanges(LocalDate startDateRange1, LocalDate endDateRange1, LocalDate startDateRange2, LocalDate endDateRange2) {
-        List<DataRange> dataRanges= getOptimumDateRange(startDateRange1, endDateRange1, startDateRange2, endDateRange2);
+        List<DataRange> dataRanges = getOptimumDateRange(startDateRange1, endDateRange1, startDateRange2, endDateRange2);
         Set<EarthquakeInfo> earthquakeInfoSet = new HashSet<>();
-        for (DataRange dataRange : dataRanges){
-            earthquakeInfoSet.addAll(this.getInfoBetweenDates(dataRange.getStartDate(),dataRange.getEndDate()));
+        for (DataRange dataRange : dataRanges) {
+            earthquakeInfoSet.addAll(this.getInfoBetweenDates(dataRange.getStartDate(), dataRange.getEndDate()));
         }
         return earthquakeInfoSet.stream().sorted(comparing(EarthquakeInfo::getDate)).collect(toList());
     }
@@ -44,39 +44,41 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
     @Override
     public List<EarthquakeInfo> getInfoByCountry(String country) {
         return loadEarthquakeInfoPort.getAllEarthquakesInfo().parallelStream()
-                .filter(e ->e.getCountry().equals(country))
+                .filter(e -> e.getCountry().equals(country))
                 .collect(Collectors.toUnmodifiableList());
     }
 
     @Override
-    public List getInfoByTwoCountriesNamesAndBetweenDates(String country1, String country2, LocalDate startDate, LocalDate endDate) {
-        return null;
+    public List<EarthquakeInfo> getInfoByTwoCountriesNamesAndBetweenDates(String country1, String country2, LocalDate startDate, LocalDate endDate) {
+        return loadEarthquakeInfoPort.getInfoBetweenDates(startDate, endDate)
+                .parallelStream().filter(e -> e.getCountry() == country1 || e.getCountry() == country2)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private List<DataRange> getOptimumDateRange(LocalDate startDateRange1, LocalDate endDateRange1, LocalDate startDateRange2, LocalDate endDateRange2) {
         List<DataRange> optimumDateRanges = new ArrayList<>();
         DataRange dataRange;
-        if(startDateRange1.isEqual(startDateRange2)){
+        if (startDateRange1.isEqual(startDateRange2)) {
             dataRange = new DataRange();
             dataRange.startDate = startDateRange1;
-            if (endDateRange1.isEqual(endDateRange2) || endDateRange1.isAfter(endDateRange2) ){
+            if (endDateRange1.isEqual(endDateRange2) || endDateRange1.isAfter(endDateRange2)) {
                 dataRange.endDate = endDateRange1;
             } else {
                 dataRange.endDate = endDateRange2;
             }
             optimumDateRanges.add(dataRange);
-        } else if(startDateRange1.isBefore(startDateRange2)){
+        } else if (startDateRange1.isBefore(startDateRange2)) {
             dataRange = new DataRange();
             dataRange.startDate = startDateRange1;
-            if(endDateRange1.isEqual(startDateRange2.minusDays(1)) || endDateRange1.isAfter(startDateRange2)){
+            if (endDateRange1.isEqual(startDateRange2.minusDays(1)) || endDateRange1.isAfter(startDateRange2)) {
                 dataRange.endDate = endDateRange2;
                 optimumDateRanges.add(dataRange);
-            }else{
+            } else {
                 dataRange.endDate = endDateRange1;
                 optimumDateRanges.add(dataRange);
                 DataRange dataRange2 = new DataRange();
-                dataRange2.startDate=startDateRange2;
-                dataRange2.endDate=endDateRange2;
+                dataRange2.startDate = startDateRange2;
+                dataRange2.endDate = endDateRange2;
                 optimumDateRanges.add(dataRange2);
             }
 
