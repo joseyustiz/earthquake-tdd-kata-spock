@@ -51,7 +51,7 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
     @Override
     public List<EarthquakeInfo> getInfoByTwoCountriesNamesAndBetweenDates(String country1, String country2, LocalDate startDate, LocalDate endDate) {
         return loadEarthquakeInfoPort.getInfoBetweenDates(startDate, endDate)
-                .parallelStream().filter(e -> e.getCountry() == country1 || e.getCountry() == country2)
+                .parallelStream().filter(e -> e.getCountry().equals(country1) || e.getCountry().equals(country2))
                 .collect(Collectors.toUnmodifiableList());
     }
 
