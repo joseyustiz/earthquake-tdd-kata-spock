@@ -12,7 +12,7 @@ import static java.time.LocalDate.parse
 class GetEarthquakeInfoControllerSpec extends Specification {
     @Subject
     @Shared
-    private def controller
+    private GetEarthquakeInfoController controller
     @Shared
     private def service
     @Shared
@@ -52,4 +52,18 @@ class GetEarthquakeInfoControllerSpec extends Specification {
         "2019-10-13" | "2019-10-15" | ["Earthquake 1", "Earthquake 2"]
         message = "Controller returned " + earthquakesInfoWebResponse.size() + " earthquake(s) info given that happened " + earthquakesInfoWebResponse.size() + " from " + startDate + " to " + endDate
     }
+
+    @Unroll("#message")
+    def "get earthquake info between two magnitudes by colling the Controller"() {
+        expect:
+        controller.getInfoBetweenMagnitud(minMagnitude, maxMagnitude) == earthquakesInfoWebResponse
+
+        where:
+        minMagnitude | maxMagnitude | earthquakesInfoWebResponse
+        1.5          | 2.0          | []
+        6.5          | 7.0          | ["Earthquake 2"]
+        6.0          | 7.0          | ["Earthquake 1", "Earthquake 2"]
+        message = "Controller returned " + earthquakesInfoWebResponse.size() + " earthquake(s) info given that happened " + earthquakesInfoWebResponse.size() + " with magnitude between " + minMagnitude + " to " + maxMagnitude
+    }
+
 }
