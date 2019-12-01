@@ -111,4 +111,13 @@ class GetEarthquakeInfoSpec extends Specification {
         "2019-10-13"    | "2019-10-14"  | "2019-10-16"    | "2019-10-17"  | 0              | 1              | 0              | 0              | 1
         "2019-10-13"    | "2019-10-13"  | "2019-10-16"    | "2019-10-17"  | 1              | 0              | 0              | 0              | 1
     }
+
+    def "get earthquakes info of a country"(){
+        expect:
+        earthquakeInfoService.getInfoByCountry(country) == earthquakesInfo
+
+        where:
+        country | earthquakesInfo
+        "Aruba" | []
+    }
 }

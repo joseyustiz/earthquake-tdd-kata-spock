@@ -40,6 +40,11 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
         return earthquakeInfoSet.stream().sorted(comparing(EarthquakeInfo::getDate)).collect(toList());
     }
 
+    @Override
+    public List<EarthquakeInfo> getInfoByCountry(String country) {
+        return null;
+    }
+
     private List<DataRange> getOptimumDateRange(LocalDate startDateRange1, LocalDate endDateRange1, LocalDate startDateRange2, LocalDate endDateRange2) {
         List<DataRange> optimumDateRanges = new ArrayList<>();
         DataRange dataRange;
