@@ -35,7 +35,7 @@ class GetEarthquakeInfoControllerSpec extends Specification {
         service = Mock(GetEarthquakeInfoUseCase)
         service.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-13")) >> []
         service.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-14")) >> [earthquake1]
-        service.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-15")) >> [earthquake1,earthquake2]
+        service.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-15")) >> [earthquake1, earthquake2]
 
         controller = new GetEarthquakeInfoController(service)
     }
