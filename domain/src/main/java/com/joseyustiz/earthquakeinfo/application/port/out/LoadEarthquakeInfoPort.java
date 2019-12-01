@@ -9,4 +9,6 @@ public interface LoadEarthquakeInfoPort{
     List<EarthquakeInfo> getInfoBetweenDates(LocalDate startDate, LocalDate endDate);
 
     List<EarthquakeInfo> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude);
+
+    List<EarthquakeInfo> getAllEarthquakesInfo();
 }

@@ -10,6 +10,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @ToString
 public class EarthquakeInfo {
-    private String info;    private LocalDate date;
+    private String info;
+    private LocalDate date;
     private double magnitude;
+    private String country;
 }

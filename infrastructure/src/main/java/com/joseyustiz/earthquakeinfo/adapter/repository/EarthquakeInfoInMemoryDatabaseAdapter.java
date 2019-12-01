@@ -35,6 +35,11 @@ public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfo
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<EarthquakeInfo> getAllEarthquakesInfo() {
+        return null;
+    }
+
     public void addEarthquakeInfo(EarthquakeInfo earthquakesInfo) {
         earthquakes.add(earthquakesInfo);
     }

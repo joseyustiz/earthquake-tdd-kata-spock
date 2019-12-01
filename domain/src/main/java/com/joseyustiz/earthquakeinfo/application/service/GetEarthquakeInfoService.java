@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
@@ -42,7 +43,9 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
 
     @Override
     public List<EarthquakeInfo> getInfoByCountry(String country) {
-        return null;
+        return loadEarthquakeInfoPort.getAllEarthquakesInfo().stream()
+                .filter(e ->e.getCountry().equals(country))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private List<DataRange> getOptimumDateRange(LocalDate startDateRange1, LocalDate endDateRange1, LocalDate startDateRange2, LocalDate endDateRange2) {
