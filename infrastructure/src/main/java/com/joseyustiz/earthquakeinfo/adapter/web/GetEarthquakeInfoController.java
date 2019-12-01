@@ -21,4 +21,8 @@ public class GetEarthquakeInfoController {
     public List<String> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude) {
         return service.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude).stream().map(EarthquakeInfo::getInfo).collect(Collectors.toUnmodifiableList());
     }
+
+    public List<String> getInfoBetweenTwoDateRanges(LocalDate startDateRange1, LocalDate endDateRange1, LocalDate startDateRange2, LocalDate endDateRange2){
+        return null;
+    }
 }

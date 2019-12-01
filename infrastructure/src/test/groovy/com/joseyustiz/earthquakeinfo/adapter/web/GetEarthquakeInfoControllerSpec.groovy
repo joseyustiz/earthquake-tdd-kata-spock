@@ -36,6 +36,8 @@ class GetEarthquakeInfoControllerSpec extends Specification {
         mockedService.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-13")) >> []
         mockedService.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-14")) >> [earthquake1]
         mockedService.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-15")) >> [earthquake1, earthquake2]
+        mockedService.getInfoBetweenDates(parse("2019-10-15"), parse("2019-10-16")) >> [earthquake2, earthquake3]
+        mockedService.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-16")) >> [earthquake1, earthquake2, earthquake3]
 
         mockedService.getInfoBetweenMagnitudes(1.5, 2.0) >> []
         mockedService.getInfoBetweenMagnitudes(6.5, 7.0) >> [earthquake2]
@@ -70,4 +72,17 @@ class GetEarthquakeInfoControllerSpec extends Specification {
         message = "Controller returned " + earthquakesInfoWebResponse.size() + " earthquake(s) info given that happened " + earthquakesInfoWebResponse.size() + " with magnitude between " + minMagnitude + " to " + maxMagnitude
     }
 
+    @Unroll("#message")
+    def "get earthquakes info that happened between two date ranges by calling the Controller"() {
+        expect:
+        controller.getInfoBetweenTwoDateRanges(parse(startDateRange1), parse(endDateRange1), parse(startDateRange2), parse(endDateRange2)) == earthquakesInfoWebResponse
+
+        where:
+        startDateRange1 | endDateRange1 | startDateRange2 | endDateRange2 | earthquakesInfoWebResponse
+        "2019-10-13"    | "2019-10-13"  | "2019-10-13"    | "2019-10-13"  | []
+        "2019-10-13"    | "2019-10-14"  | "2019-10-13"    | "2019-10-14"  | ["Earthquake 1"]
+        "2019-10-13"    | "2019-10-15"  | "2019-10-13"    | "2019-10-14"  | ["Earthquake 1", "Earthquake 2"]
+        "2019-10-13"    | "2019-10-14"  | "2019-10-15"    | "2019-10-16"  | ["Earthquake 1", "Earthquake 2", "Earthquake 3"]
+        message = "Retrieved " + earthquakesInfoWebResponse.size() + " earthquake(s) info given that happened " + earthquakesInfoWebResponse.size() + " earthquake(s) between " + startDateRange1 + " to " + endDateRange1 + " and " + startDateRange2 + " to " + endDateRange2
+    }
 }
