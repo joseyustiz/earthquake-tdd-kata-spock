@@ -48,6 +48,11 @@ class GetEarthquakeInfoControllerSpec extends Specification {
         mockedService.getInfoBetweenMagnitudes(6.5, 7.0) >> [earthquake2]
         mockedService.getInfoBetweenMagnitudes(6.0, 7.0) >> [earthquake1, earthquake2]
 
+        mockedService.getInfoByCountry("Aruba") >> []
+        mockedService.getInfoByCountry("Mexico") >> [earthquake1]
+        mockedService.getInfoByCountry("Chile") >> [earthquake2]
+        mockedService.getInfoByCountry("Japan") >> [earthquake3, earthquake4]
+
         controller = new GetEarthquakeInfoController(mockedService)
     }
 
@@ -101,7 +106,7 @@ class GetEarthquakeInfoControllerSpec extends Specification {
         "Aruba"  | []
         "Mexico" | ["Earthquake 1"]
         "Chile"  | ["Earthquake 2"]
-        "Japan"  | ["Earthquake 3","Earthquake 4"]
+        "Japan"  | ["Earthquake 3", "Earthquake 4"]
 
         message = "Controller returned " + earthquakesInfoWebResponse.size() + " earthquake(s) info given that happened " + earthquakesInfoWebResponse.size() + " earthquake(s) at " + country
     }

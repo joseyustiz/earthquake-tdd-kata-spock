@@ -27,8 +27,8 @@ public class GetEarthquakeInfoController {
         return mapInfoTo(infoBetweenTwoDateRanges);
     }
 
-    public List<String> getInfoByCountry(String s) {
-        return null;
+    public List<String> getInfoByCountry(String country) {
+        return mapInfoTo(service.getInfoByCountry(country));
     }
 
     private List<String> mapInfoTo(List<EarthquakeInfo> infoBetweenTwoDateRanges) {
