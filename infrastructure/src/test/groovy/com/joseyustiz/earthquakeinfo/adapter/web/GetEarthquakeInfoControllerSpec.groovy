@@ -39,6 +39,11 @@ class GetEarthquakeInfoControllerSpec extends Specification {
         mockedService.getInfoBetweenDates(parse("2019-10-15"), parse("2019-10-16")) >> [earthquake2, earthquake3]
         mockedService.getInfoBetweenDates(parse("2019-10-13"), parse("2019-10-16")) >> [earthquake1, earthquake2, earthquake3]
 
+        mockedService.getInfoBetweenTwoDateRanges(parse("2019-10-13"), parse("2019-10-13"), parse("2019-10-13"), parse("2019-10-13")) >> []
+        mockedService.getInfoBetweenTwoDateRanges(parse("2019-10-13"), parse("2019-10-14"), parse("2019-10-13"), parse("2019-10-14")) >> [earthquake1]
+        mockedService.getInfoBetweenTwoDateRanges(parse("2019-10-13"), parse("2019-10-15"), parse("2019-10-13"), parse("2019-10-14")) >> [earthquake1, earthquake2]
+        mockedService.getInfoBetweenTwoDateRanges(parse("2019-10-13"), parse("2019-10-14"), parse("2019-10-15"), parse("2019-10-16")) >> [earthquake1, earthquake2, earthquake3]
+
         mockedService.getInfoBetweenMagnitudes(1.5, 2.0) >> []
         mockedService.getInfoBetweenMagnitudes(6.5, 7.0) >> [earthquake2]
         mockedService.getInfoBetweenMagnitudes(6.0, 7.0) >> [earthquake1, earthquake2]

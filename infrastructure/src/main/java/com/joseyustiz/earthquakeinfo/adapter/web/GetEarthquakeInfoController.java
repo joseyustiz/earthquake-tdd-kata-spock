@@ -15,14 +15,19 @@ public class GetEarthquakeInfoController {
     private final GetEarthquakeInfoUseCase service;
 
     public List<String> getInfoBetweenDates(LocalDate startDate, LocalDate endDate) {
-        return service.getInfoBetweenDates(startDate, endDate).stream().map(EarthquakeInfo::getInfo).collect(Collectors.toUnmodifiableList());
+        return mapInfoTo(service.getInfoBetweenDates(startDate, endDate));
     }
 
     public List<String> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude) {
-        return service.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude).stream().map(EarthquakeInfo::getInfo).collect(Collectors.toUnmodifiableList());
+        return mapInfoTo(service.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude));
     }
 
     public List<String> getInfoBetweenTwoDateRanges(LocalDate startDateRange1, LocalDate endDateRange1, LocalDate startDateRange2, LocalDate endDateRange2){
-        return null;
+        List<EarthquakeInfo> infoBetweenTwoDateRanges = service.getInfoBetweenTwoDateRanges(startDateRange1, endDateRange1, startDateRange2, endDateRange2);
+        return mapInfoTo(infoBetweenTwoDateRanges);
+    }
+
+    private List<String> mapInfoTo(List<EarthquakeInfo> infoBetweenTwoDateRanges) {
+        return infoBetweenTwoDateRanges.stream().map(EarthquakeInfo::getInfo).collect(Collectors.toUnmodifiableList());
     }
 }
