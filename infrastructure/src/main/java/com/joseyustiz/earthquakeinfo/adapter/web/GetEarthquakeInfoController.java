@@ -23,8 +23,7 @@ public class GetEarthquakeInfoController {
     }
 
     public List<String> getInfoBetweenTwoDateRanges(LocalDate startDateRange1, LocalDate endDateRange1, LocalDate startDateRange2, LocalDate endDateRange2){
-        List<EarthquakeInfo> infoBetweenTwoDateRanges = service.getInfoBetweenTwoDateRanges(startDateRange1, endDateRange1, startDateRange2, endDateRange2);
-        return mapInfoTo(infoBetweenTwoDateRanges);
+        return mapInfoTo(service.getInfoBetweenTwoDateRanges(startDateRange1, endDateRange1, startDateRange2, endDateRange2));
     }
 
     public List<String> getInfoByCountry(String country) {
