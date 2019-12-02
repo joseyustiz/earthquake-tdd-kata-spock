@@ -35,6 +35,6 @@ public class GetEarthquakeInfoController {
     }
 
     public int getAmountAtTwoCountriesNamesAndBetweenDates(String country1, String country2, LocalDate startDate, LocalDate endDate) {
-        return -1;
+        return service.getAmountAtTwoCountriesNamesAndBetweenDates(country1, country2, startDate,endDate);
     }
 }

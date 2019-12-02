@@ -53,6 +53,12 @@ class GetEarthquakeInfoControllerSpec extends Specification {
         mockedService.getInfoByCountry("Chile") >> [earthquake2]
         mockedService.getInfoByCountry("Japan") >> [earthquake3, earthquake4]
 
+        mockedService.getAmountAtTwoCountriesNamesAndBetweenDates("Aruba", "Argentina", parse("2019-10-13"), parse("2019-10-13")) >> 0
+        mockedService.getAmountAtTwoCountriesNamesAndBetweenDates("Japan", "Mexico", parse("2019-10-13"), parse("2019-10-13")) >> 0
+        mockedService.getAmountAtTwoCountriesNamesAndBetweenDates("Mexico", "Chile", parse("2019-10-13"), parse("2019-10-14")) >> 1
+        mockedService.getAmountAtTwoCountriesNamesAndBetweenDates("Chile", "Aruba", parse("2019-10-13"), parse("2019-10-15")) >> 1
+        mockedService.getAmountAtTwoCountriesNamesAndBetweenDates("Japan", "Mexico", parse("2019-10-13"), parse("2019-10-16")) >> 2
+
         controller = new GetEarthquakeInfoController(mockedService)
     }
 
