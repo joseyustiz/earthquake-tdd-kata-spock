@@ -5,6 +5,7 @@ import com.joseyustiz.earthquakeinfo.model.EarthquakeInfo;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class USGSEarthquakeServiceAdapter implements LoadEarthquakeInfoPort {
@@ -16,7 +17,7 @@ public class USGSEarthquakeServiceAdapter implements LoadEarthquakeInfoPort {
 
     @Override
     public List<EarthquakeInfo> getInfoBetweenDates(LocalDate startDate, LocalDate endDate) {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
