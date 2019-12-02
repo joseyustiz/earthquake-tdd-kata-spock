@@ -110,4 +110,20 @@ class GetEarthquakeInfoControllerSpec extends Specification {
 
         message = "Controller returned " + earthquakesInfoWebResponse.size() + " earthquake(s) info given that happened " + earthquakesInfoWebResponse.size() + " earthquake(s) at " + country
     }
+
+    @Unroll("#message")
+    def "get amount of earthquakes that happened at two countries between two dates by calling the Controller"() {
+        expect:
+        controller.getAmountAtTwoCountriesNamesAndBetweenDates(country1, country2, parse(startDate), parse(endDate)) == earthquakesAmount
+
+        where:
+        country1 | country2    | startDate    | endDate      | earthquakesAmount
+        "Aruba"  | "Argentina" | "2019-10-13" | "2019-10-13" | 0
+        "Japan"  | "Mexico"    | "2019-10-13" | "2019-10-13" | 0
+        "Mexico" | "Chile"     | "2019-10-13" | "2019-10-14" | 1
+        "Chile"  | "Aruba"     | "2019-10-13" | "2019-10-15" | 1
+        "Japan"  | "Mexico"    | "2019-10-13" | "2019-10-16" | 2
+
+        message = "The controller returned the amount of " + earthquakesAmount + " earthquake(s) that happened at " + country1 + " and " + country2 + " between " + startDate + " and " + endDate
+    }
 }

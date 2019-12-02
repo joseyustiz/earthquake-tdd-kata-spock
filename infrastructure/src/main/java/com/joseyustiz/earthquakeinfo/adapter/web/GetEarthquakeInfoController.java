@@ -33,4 +33,8 @@ public class GetEarthquakeInfoController {
     private List<String> mapInfoTo(List<EarthquakeInfo> infoBetweenTwoDateRanges) {
         return infoBetweenTwoDateRanges.stream().map(EarthquakeInfo::getInfo).collect(Collectors.toUnmodifiableList());
     }
+
+    public int getAmountAtTwoCountriesNamesAndBetweenDates(String country1, String country2, LocalDate startDate, LocalDate endDate) {
+        return -1;
+    }
 }
