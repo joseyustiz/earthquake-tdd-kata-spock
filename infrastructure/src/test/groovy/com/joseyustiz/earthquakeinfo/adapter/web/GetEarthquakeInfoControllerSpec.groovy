@@ -90,4 +90,19 @@ class GetEarthquakeInfoControllerSpec extends Specification {
         "2019-10-13"    | "2019-10-14"  | "2019-10-15"    | "2019-10-16"  | ["Earthquake 1", "Earthquake 2", "Earthquake 3"]
         message = "Retrieved " + earthquakesInfoWebResponse.size() + " earthquake(s) info given that happened " + earthquakesInfoWebResponse.size() + " earthquake(s) between " + startDateRange1 + " to " + endDateRange1 + " and " + startDateRange2 + " to " + endDateRange2
     }
+
+    @Unroll("#message")
+    def "get earthquakes info by country name by calling the Controller"() {
+        expect:
+        controller.getInfoByCountry(country) == earthquakesInfoWebResponse
+
+        where:
+        country  | earthquakesInfoWebResponse
+        "Aruba"  | []
+        "Mexico" | ["Earthquake 1"]
+        "Chile"  | ["Earthquake 2"]
+        "Japan"  | ["Earthquake 3","Earthquake 4"]
+
+        message = "Controller returned " + earthquakesInfoWebResponse.size() + " earthquake(s) info given that happened " + earthquakesInfoWebResponse.size() + " earthquake(s) at " + country
+    }
 }

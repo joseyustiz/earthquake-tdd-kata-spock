@@ -27,6 +27,10 @@ public class GetEarthquakeInfoController {
         return mapInfoTo(infoBetweenTwoDateRanges);
     }
 
+    public List<String> getInfoByCountry(String s) {
+        return null;
+    }
+
     private List<String> mapInfoTo(List<EarthquakeInfo> infoBetweenTwoDateRanges) {
         return infoBetweenTwoDateRanges.stream().map(EarthquakeInfo::getInfo).collect(Collectors.toUnmodifiableList());
     }
