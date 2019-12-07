@@ -5,6 +5,7 @@ import com.joseyustiz.earthquakeinfo.model.EarthquakeInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,7 +19,7 @@ public class GetEarthquakeInfoController {
         return mapInfoTo(service.getInfoBetweenDates(startDate, endDate));
     }
 
-    public List<String> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude) {
+    public List<String> getInfoBetweenMagnitudes(BigDecimal minMagnitude, BigDecimal maxMagnitude) {
         return mapInfoTo(service.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude));
     }
 

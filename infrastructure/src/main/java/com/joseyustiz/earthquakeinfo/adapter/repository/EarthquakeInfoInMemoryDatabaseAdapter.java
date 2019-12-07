@@ -3,6 +3,7 @@ package com.joseyustiz.earthquakeinfo.adapter.repository;
 import com.joseyustiz.earthquakeinfo.application.port.out.LoadEarthquakeInfoPort;
 import com.joseyustiz.earthquakeinfo.model.EarthquakeInfo;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
@@ -28,9 +29,9 @@ public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfo
     }
 
     @Override
-    public List<EarthquakeInfo> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude) {
+    public List<EarthquakeInfo> getInfoBetweenMagnitudes(BigDecimal minMagnitude, BigDecimal maxMagnitude) {
         return earthquakes.stream()
-                .filter(i -> i.getMagnitude() >= minMagnitude && i.getMagnitude() <= maxMagnitude)
+                .filter(i -> i.getMagnitude().compareTo(minMagnitude) >= 0 && i.getMagnitude().compareTo(maxMagnitude) <= 0)
                 .sorted(comparing(EarthquakeInfo::getDate))
                 .collect(Collectors.toList());
     }

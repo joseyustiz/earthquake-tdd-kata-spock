@@ -5,6 +5,7 @@ import com.joseyustiz.earthquakeinfo.application.port.out.LoadEarthquakeInfoPort
 import com.joseyustiz.earthquakeinfo.model.EarthquakeInfo;
 import lombok.Getter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,7 +28,7 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
     }
 
     @Override
-    public List<EarthquakeInfo> getInfoBetweenMagnitudes(double minMagnitude, double maxMagnitude) {
+    public List<EarthquakeInfo> getInfoBetweenMagnitudes(BigDecimal minMagnitude, BigDecimal maxMagnitude) {
         return loadEarthquakeInfoPort.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude);
     }
 
