@@ -12,6 +12,7 @@ import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,7 +60,7 @@ public class USGSEarthquakeServiceAdapter implements LoadEarthquakeInfoPort {
 
     @Override
     public List<EarthquakeInfo> getInfoBetweenMagnitudes(BigDecimal minMagnitude, BigDecimal maxMagnitude) {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override

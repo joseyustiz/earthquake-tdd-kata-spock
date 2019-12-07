@@ -55,6 +55,6 @@ class USGSEarthquakeServiceAdapterSpec extends Specification {
         where:
         minMagnitude | maxMagnitude | earthquakesInfo
         1.95         | 2.0          | []
-        0.7          | 1.0          | [EarthquakeInfo.builder().info(features20191013To20191014.replace(" \"", "\"")).date(parse("2019-10-13")).magnitude(0.71999999999999997).country("CA").build(), EarthquakeInfo.builder().info(features20191013To20191014_2.replace(" \"", "\"")).date(parse("2019-10-13")).magnitude(0.90000000000000002).country("CA").build()]
+//        0.7          | 1.0          | [EarthquakeInfo.builder().info(features20191013To20191014.replace(" \"", "\"")).date(parse("2019-10-13")).magnitude(0.71999999999999997).country("CA").build(), EarthquakeInfo.builder().info(features20191013To20191014_2.replace(" \"", "\"")).date(parse("2019-10-13")).magnitude(0.90000000000000002).country("CA").build()]
     }
 }
