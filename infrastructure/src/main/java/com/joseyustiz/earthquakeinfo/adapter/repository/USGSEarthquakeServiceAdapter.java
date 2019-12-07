@@ -12,7 +12,6 @@ import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,8 +59,25 @@ public class USGSEarthquakeServiceAdapter implements LoadEarthquakeInfoPort {
 
     @Override
     public List<EarthquakeInfo> getInfoBetweenMagnitudes(BigDecimal minMagnitude, BigDecimal maxMagnitude) {
-        return new ArrayList<>();
-    }
+        String url = serviceUrl.toString() + "&minmagnitude=" + minMagnitude + "&maxmagnitude=" + maxMagnitude;
+        UUGSEarthquakeInfoQueryResult serviceResponse = restTemplate.getForObject(url, UUGSEarthquakeInfoQueryResult.class);
+        ObjectMapper objectMapper = new ObjectMapper();
+        assert serviceResponse != null;
+        return serviceResponse.getFeatures().stream()
+                .map(e -> {
+                    try {
+                        return EarthquakeInfo.builder()
+                                .magnitude(e.getProperties().getMag())
+                                .country(getCountry(e.getProperties().getPlace()))
+                                .date(getLocalDate(e.getProperties().getTime()))
+                                .info(objectMapper.writeValueAsString(e))
+                                .build();
+                    } catch (JsonProcessingException ex) {
+                        log.error("Problem converting USGS Earthquake Feature to json", ex);
+                    }
+                    return new EarthquakeInfo();
+                })
+                .collect(Collectors.toUnmodifiableList());    }
 
     @Override
     public List<EarthquakeInfo> getAllEarthquakesInfo() {
