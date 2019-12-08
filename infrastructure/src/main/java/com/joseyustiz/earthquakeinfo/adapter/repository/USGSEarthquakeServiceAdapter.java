@@ -68,6 +68,7 @@ public class USGSEarthquakeServiceAdapter implements LoadEarthquakeInfoPort {
 
     @Override
     public List<EarthquakeInfo> getAllEarthquakesInfo() {
-        return null;
+        String url = serviceUrl.toString();
+        return getEarthquakesInfoFromWebService(url);
     }
 }

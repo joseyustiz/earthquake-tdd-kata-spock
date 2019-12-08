@@ -58,6 +58,6 @@ class USGSEarthquakeServiceAdapterSpec extends Specification {
         earthquakeService.getAllEarthquakesInfo().toString() == earthquakesInfo.toString()
 
         where:
-        earthquakesInfo << [earthquakeInfo1, earthquakeInfo2]
+        earthquakesInfo = [earthquakeInfo1, earthquakeInfo2]
     }
 }
