@@ -31,6 +31,7 @@ class USGSEarthquakeServiceAdapterSpec extends Specification {
 
         expect:
         earthquakeService.getInfoBetweenDates(parse(startDate), parse(endDate)).toString() == earthquakesInfo.toString()
+
         where:
         startDate    | endDate      | earthquakesInfo
         "2019-10-13" | "2019-10-13" | []
@@ -44,6 +45,7 @@ class USGSEarthquakeServiceAdapterSpec extends Specification {
 
         expect:
         earthquakeService.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude).toString() == earthquakesInfo.toString()
+
         where:
         minMagnitude | maxMagnitude | earthquakesInfo
         1.95         | 2.0          | []
