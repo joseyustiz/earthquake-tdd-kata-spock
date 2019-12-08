@@ -1,6 +1,7 @@
 plugins {
     id 'groovy'
     id 'java'
+    id "org.sonarqube" version "2.8"
 }
 
 group 'com.joseyustiz'
@@ -18,4 +19,10 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.10'
     annotationProcessor 'org.projectlombok:lombok:1.18.10'
     testImplementation 'org.spockframework:spock-core:1.3-groovy-2.5'
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "earthquack-tdd-kata-spock"
+    }
 }
