@@ -26,18 +26,18 @@ public class USGSEarthquakeServiceAdapter implements LoadEarthquakeInfoPort {
     @Override
     public List<EarthquakeInfo> getInfoBetweenDates(LocalDate startDate, LocalDate endDate) {
         String url = serviceUrl.toString() + "&starttime=" + startDate + "&endtime=" + endDate;
-        return getEarthquakesInfo(url);
+        return getEarthquakesInfoFromWebService(url);
     }
 
-    private List<EarthquakeInfo> getEarthquakesInfo(String url) {
+    private List<EarthquakeInfo> getEarthquakesInfoFromWebService(String url) {
         UUGSEarthquakeInfoQueryResult serviceResponse = restTemplate.getForObject(url, UUGSEarthquakeInfoQueryResult.class);
         assert serviceResponse != null;
         return serviceResponse.getFeatures().stream()
-                .map(e -> getEarthquakeInfoFor(e))
+                .map(e -> mapEarthquakeInfoFor(e))
                 .collect(Collectors.toUnmodifiableList());
     }
 
-    private EarthquakeInfo getEarthquakeInfoFor(Feature e) {
+    private EarthquakeInfo mapEarthquakeInfoFor(Feature e) {
         try {
             return EarthquakeInfo.builder()
                     .magnitude(e.getProperties().getMag())
@@ -63,7 +63,7 @@ public class USGSEarthquakeServiceAdapter implements LoadEarthquakeInfoPort {
     @Override
     public List<EarthquakeInfo> getInfoBetweenMagnitudes(BigDecimal minMagnitude, BigDecimal maxMagnitude) {
         String url = serviceUrl.toString() + "&minmagnitude=" + minMagnitude + "&maxmagnitude=" + maxMagnitude;
-        return getEarthquakesInfo(url);
+        return getEarthquakesInfoFromWebService(url);
     }
 
     @Override
