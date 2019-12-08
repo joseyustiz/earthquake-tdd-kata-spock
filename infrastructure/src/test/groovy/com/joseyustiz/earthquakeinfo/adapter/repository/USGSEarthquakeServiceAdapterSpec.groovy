@@ -5,6 +5,7 @@ import com.joseyustiz.earthquakeinfo.model.EarthquakeInfo
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
 import spock.lang.Subject
+import spock.lang.Unroll
 
 import static java.time.LocalDate.parse
 
@@ -24,6 +25,7 @@ class USGSEarthquakeServiceAdapterSpec extends Specification {
     @Subject
     private def earthquakeService = new USGSEarthquakeServiceAdapter(mockedRestTemplate, new URL(USGSE_URL))
 
+    @Unroll("#message")
     def "get earthquake info happened between two dates from the USGS Earthquake Service"() {
         given:
         mockedRestTemplate.getForObject(USGSE_URL + "&starttime=2019-10-13&endtime=2019-10-13", UUGSEarthquakeInfoQueryResult.class) >> new UUGSEarthquakeInfoQueryResult(Collections.emptyList())
@@ -36,8 +38,11 @@ class USGSEarthquakeServiceAdapterSpec extends Specification {
         startDate    | endDate      | earthquakesInfo
         "2019-10-13" | "2019-10-13" | []
         "2019-10-13" | "2019-10-14" | [earthquakeInfo1, earthquakeInfo2]
+
+        message = "Retrieved " + earthquakesInfo.size() + " earthquake(s) info given that happened " + earthquakesInfo.size() + " from " + startDate + " to " + endDate
     }
 
+    @Unroll("#message")
     def "get earthquake info between two magnitudes from the USGS Earthquake Service"() {
         given:
         mockedRestTemplate.getForObject(USGSE_URL + "&minmagnitude=1.95&maxmagnitude=2.0", UUGSEarthquakeInfoQueryResult.class) >> new UUGSEarthquakeInfoQueryResult(Collections.emptyList())
@@ -50,8 +55,11 @@ class USGSEarthquakeServiceAdapterSpec extends Specification {
         minMagnitude | maxMagnitude | earthquakesInfo
         1.95         | 2.0          | []
         0.7          | 1.0          | [earthquakeInfo1, earthquakeInfo2]
+
+        message = "Retrieved " + earthquakesInfo.size() + " earthquake(s) info given that happened " + earthquakesInfo.size() + " with magnitude between " + minMagnitude + " to " + maxMagnitude
     }
 
+    @Unroll("Get all earthquake info from the USGS Earthquake Service")
     def "get all earthquake info from the USGS Earthquake Service"() {
         given:
         mockedRestTemplate.getForObject(USGSE_URL, UUGSEarthquakeInfoQueryResult.class) >> new UUGSEarthquakeInfoQueryResult([featureEarthquakeInfo1, featureEarthquakeInfo2])
