@@ -50,19 +50,14 @@ class USGSEarthquakeServiceAdapterSpec extends Specification {
         0.7          | 1.0          | [earthquakeInfo1, earthquakeInfo2]
     }
 
-    def "get earthquakes info that happened between two date ranges from the USGS Earthquake Service"() {
+    def "get all earthquake info from the USGS Earthquake Service"() {
         given:
-
-        mockedRestTemplate.getForObject(USGSE_URL + "&starttime=2019-10-13&endtime=2019-10-13", UUGSEarthquakeInfoQueryResult.class) >> new UUGSEarthquakeInfoQueryResult(Collections.emptyList())
-        mockedRestTemplate.getForObject(USGSE_URL + "&starttime=2019-10-13&endtime=2019-10-14", UUGSEarthquakeInfoQueryResult.class) >> new UUGSEarthquakeInfoQueryResult([featureEarthquakeInfo1, featureEarthquakeInfo2])
+        mockedRestTemplate.getForObject(USGSE_URL, UUGSEarthquakeInfoQueryResult.class) >> new UUGSEarthquakeInfoQueryResult([featureEarthquakeInfo1, featureEarthquakeInfo2])
 
         expect:
-        earthquakeService.getInfoBetweenTwoDateRanges(parse(startDateRange1), parse(endDateRange1), parse(startDateRange2), parse(endDateRange2)).toString() == earthquakesInfo.toString()
+        earthquakeService.getAllEarthquakesInfo().toString() == earthquakesInfo.toString()
+
         where:
-        startDateRange1 | endDateRange1 | startDateRange2 | endDateRange2 | earthquakesInfo
-        "2019-10-13"    | "2019-10-13"  | "2019-10-13"    | "2019-10-13"  | []
-//        "2019-10-13"    | "2019-10-14"  | "2019-10-13"    | "2019-10-14"  | [earthquakeInfo1]
-//        "2019-10-13"    | "2019-10-15"  | "2019-10-13"    | "2019-10-14"  | [earthquakeInfo1, earthquakeInfo2]
-//        "2019-10-13"    | "2019-10-14"  | "2019-10-15"    | "2019-10-16"  | [earthquakeInfo1, earthquakeInfo2/*, earthquakeInfo3*/]
+        earthquakesInfo << [earthquakeInfo1, earthquakeInfo2]
     }
 }
