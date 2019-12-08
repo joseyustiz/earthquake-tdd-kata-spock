@@ -41,7 +41,7 @@ public class USGSEarthquakeServiceAdapter implements LoadEarthquakeInfoPort {
         try {
             return EarthquakeInfo.builder()
                     .magnitude(e.getProperties().getMag())
-                    .country(exytractCountry(e.getProperties().getPlace()))
+                    .country(extractCountry(e.getProperties().getPlace()))
                     .date(getLocalDateForEpochMilli(e.getProperties().getTime()))
                     .info(OBJECT_MAPPER.writeValueAsString(e))
                     .build();
@@ -55,7 +55,7 @@ public class USGSEarthquakeServiceAdapter implements LoadEarthquakeInfoPort {
         return Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
-    private String exytractCountry(String place) {
+    private String extractCountry(String place) {
         String[] token = place.split(",");
         return token.length > 0 ? token[token.length - 1].trim() : "";
     }
