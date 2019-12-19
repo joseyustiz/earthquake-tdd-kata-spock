@@ -7,6 +7,7 @@ import static java.time.LocalDate.parse
 
 class DateRangeSpec extends Specification{
     @Shared DateRange dataRange20191013_20191013
+    @Shared DateRange dataRange20191013_20191013_2
     @Shared DateRange dataRange20191013_20191014
     @Shared DateRange dataRange20191013_20191015
     @Shared DateRange dataRange20191013_20191016
@@ -16,6 +17,7 @@ class DateRangeSpec extends Specification{
 
     void setupSpec() {
         dataRange20191013_20191013 = new DateRange(parse("2019-10-13"),parse("2019-10-13"))
+        dataRange20191013_20191013_2 = new DateRange(parse("2019-10-13"),parse("2019-10-13"))
         dataRange20191013_20191014 = new DateRange(parse("2019-10-13"),parse("2019-10-14"))
         dataRange20191013_20191015 = new DateRange(parse("2019-10-13"),parse("2019-10-15"))
         dataRange20191013_20191016 = new DateRange(parse("2019-10-13"),parse("2019-10-16"));
@@ -26,7 +28,7 @@ class DateRangeSpec extends Specification{
 
     def "the ranges are overlap if the ranges share common dates"(){
         expect:
-        dataRange20191013_20191013.isOverLap(dataRange20191013_20191013)
+        dataRange20191013_20191013.isOverLap(dataRange20191013_20191013_2)
         dataRange20191013_20191013.isOverLap(dataRange20191013_20191014)
         dataRange20191013_20191013.isOverLap(dataRange20191013_20191015)
         dataRange20191013_20191013.isOverLap(dataRange20191010_20191016)

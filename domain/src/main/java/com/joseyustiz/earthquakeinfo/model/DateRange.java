@@ -16,7 +16,8 @@ public class DateRange {
     private LocalDate endDate;
 
     public boolean isOverLap(DateRange dateRange){
-        return equals(dateRange) || (startDate.compareTo(dateRange.getStartDate()) >= 0 && endDate.compareTo(dateRange.getEndDate()) <= 0) || (startDate.compareTo(dateRange.getStartDate()) <= 0 && endDate.compareTo(dateRange.getEndDate()) >= 0);
+        return equals(dateRange) || (startDate.compareTo(dateRange.getStartDate()) >= 0 && endDate.compareTo(dateRange.getEndDate()) <= 0)
+                || (startDate.compareTo(dateRange.getStartDate()) <= 0 && endDate.compareTo(dateRange.getEndDate()) >= 0);
     }
 
     public boolean isConsecutive(DateRange dateRange){
@@ -30,7 +31,8 @@ public class DateRange {
             optimumDateRanges.add(dateRange1);
         } else {
             if (dateRange1.isConsecutive(dateRange2) || dateRange1.isOverLap(dateRange2)) {
-                optimumDateRanges.add(new DateRange(getMinimumStartDate(dateRange1, dateRange2), getMaximumEndDate(dateRange1, dateRange2)));
+                optimumDateRanges.add(new DateRange(getMinimum(dateRange1.getStartDate(), dateRange2.getEndDate()),
+                        getMaximum(dateRange1.getEndDate(), dateRange2.getEndDate())));
             } else {
                 optimumDateRanges.add(dateRange1);
                 optimumDateRanges.add(dateRange2);
@@ -40,11 +42,11 @@ public class DateRange {
         return optimumDateRanges;
     }
 
-    private static LocalDate getMaximumEndDate(DateRange dateRange1, DateRange dateRange2) {
-        return dateRange1.getEndDate().compareTo(dateRange2.getEndDate()) >= 0 ? dateRange1.getEndDate() : dateRange2.getEndDate();
+    private static LocalDate getMaximum(LocalDate localDate1, LocalDate localDate2) {
+        return localDate1.compareTo(localDate2) >= 0 ? localDate1 : localDate2;
     }
 
-    private static LocalDate getMinimumStartDate(DateRange dateRange1, DateRange dateRange2) {
-        return dateRange1.getStartDate().compareTo(dateRange2.getStartDate()) <= 0 ? dateRange1.getStartDate() : dateRange2.getStartDate();
+    private static LocalDate getMinimum(LocalDate localDate1, LocalDate localDate2) {
+        return localDate1.compareTo(localDate2) <= 0 ? localDate1 : localDate2;
     }
 }
