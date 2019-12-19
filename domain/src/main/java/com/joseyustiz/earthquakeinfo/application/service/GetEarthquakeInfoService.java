@@ -2,12 +2,11 @@ package com.joseyustiz.earthquakeinfo.application.service;
 
 import com.joseyustiz.earthquakeinfo.application.port.in.GetEarthquakeInfoUseCase;
 import com.joseyustiz.earthquakeinfo.application.port.out.LoadEarthquakeInfoPort;
+import com.joseyustiz.earthquakeinfo.model.DateRange;
 import com.joseyustiz.earthquakeinfo.model.EarthquakeInfo;
-import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,10 +33,10 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
 
     @Override
     public List<EarthquakeInfo> getInfoBetweenTwoDateRanges(LocalDate startDateRange1, LocalDate endDateRange1, LocalDate startDateRange2, LocalDate endDateRange2) {
-        List<DataRange> dataRanges = getOptimumDateRange(startDateRange1, endDateRange1, startDateRange2, endDateRange2);
+        List<DateRange> dateRanges = DateRange.getOptimumDateRange(new DateRange(startDateRange1, endDateRange1), new DateRange(startDateRange2, endDateRange2));
         Set<EarthquakeInfo> earthquakeInfoSet = new HashSet<>();
-        for (DataRange dataRange : dataRanges) {
-            earthquakeInfoSet.addAll(this.getInfoBetweenDates(dataRange.getStartDate(), dataRange.getEndDate()));
+        for (DateRange dateRange : dateRanges) {
+            earthquakeInfoSet.addAll(this.getInfoBetweenDates(dateRange.getStartDate(), dateRange.getEndDate()));
         }
         return earthquakeInfoSet.stream().sorted(comparing(EarthquakeInfo::getDate)).collect(toList());
     }
@@ -51,49 +50,12 @@ public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
 
     @Override
     public int getAmountAtTwoCountriesNamesAndBetweenDates(String country1, String country2, LocalDate startDate, LocalDate endDate) {
-        return getInfoByTwoCountriesNamesAndBetweenDates(country1, country2, startDate,endDate).size();
+        return getInfoByTwoCountriesNamesAndBetweenDates(country1, country2, startDate, endDate).size();
     }
 
     private List<EarthquakeInfo> getInfoByTwoCountriesNamesAndBetweenDates(String country1, String country2, LocalDate startDate, LocalDate endDate) {
         return loadEarthquakeInfoPort.getInfoBetweenDates(startDate, endDate)
                 .parallelStream().filter(e -> e.getCountry().equals(country1) || e.getCountry().equals(country2))
                 .collect(Collectors.toUnmodifiableList());
-    }
-
-    private List<DataRange> getOptimumDateRange(LocalDate startDateRange1, LocalDate endDateRange1, LocalDate startDateRange2, LocalDate endDateRange2) {
-        List<DataRange> optimumDateRanges = new ArrayList<>();
-        DataRange dataRange;
-        if (startDateRange1.isEqual(startDateRange2)) {
-            dataRange = new DataRange();
-            dataRange.startDate = startDateRange1;
-            if (endDateRange1.isEqual(endDateRange2) || endDateRange1.isAfter(endDateRange2)) {
-                dataRange.endDate = endDateRange1;
-            } else {
-                dataRange.endDate = endDateRange2;
-            }
-            optimumDateRanges.add(dataRange);
-        } else if (startDateRange1.isBefore(startDateRange2)) {
-            dataRange = new DataRange();
-            dataRange.startDate = startDateRange1;
-            if (endDateRange1.isEqual(startDateRange2.minusDays(1)) || endDateRange1.isAfter(startDateRange2)) {
-                dataRange.endDate = endDateRange2;
-                optimumDateRanges.add(dataRange);
-            } else {
-                dataRange.endDate = endDateRange1;
-                optimumDateRanges.add(dataRange);
-                DataRange dataRange2 = new DataRange();
-                dataRange2.startDate = startDateRange2;
-                dataRange2.endDate = endDateRange2;
-                optimumDateRanges.add(dataRange2);
-            }
-
-        }
-        return optimumDateRanges;
-    }
-
-    @Getter
-    private class DataRange {
-        LocalDate startDate;
-        LocalDate endDate;
     }
 }

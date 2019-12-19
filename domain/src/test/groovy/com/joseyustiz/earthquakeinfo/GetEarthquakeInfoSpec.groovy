@@ -143,4 +143,5 @@ class GetEarthquakeInfoSpec extends Specification {
 
         message = "Retrieved the amount of " + earthquakesAmount + " earthquake(s) that happened at " + country1 + " and " + country2 + " between " + startDate + " and " + endDate
     }
+
 }
