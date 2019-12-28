@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import static java.util.Comparator.comparing;
 
 public class EarthquakeInfoInMemoryDatabaseAdapter implements LoadEarthquakeInfoPort {
-    private Set<EarthquakeInfo> earthquakes;
+    private final Set<EarthquakeInfo> earthquakes;
 
     public EarthquakeInfoInMemoryDatabaseAdapter() {
         this.earthquakes = new HashSet<>();

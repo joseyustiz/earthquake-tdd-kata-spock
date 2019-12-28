@@ -14,7 +14,7 @@ import static java.time.LocalDate.parse
 class GetEarthquakeInfoSpec extends Specification {
     @Subject
     @Shared
-    private GetEarthquakeInfoUseCase earthquakeInfoService;
+    private GetEarthquakeInfoUseCase earthquakeInfoService
     @Shared
     private def earthquake1
     @Shared

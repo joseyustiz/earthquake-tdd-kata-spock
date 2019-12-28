@@ -16,7 +16,7 @@ import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
 public class GetEarthquakeInfoService implements GetEarthquakeInfoUseCase {
-    private LoadEarthquakeInfoPort loadEarthquakeInfoPort;
+    private final LoadEarthquakeInfoPort loadEarthquakeInfoPort;
 
     public GetEarthquakeInfoService(LoadEarthquakeInfoPort loadEarthquakeInfoPort) {
         this.loadEarthquakeInfoPort = loadEarthquakeInfoPort;

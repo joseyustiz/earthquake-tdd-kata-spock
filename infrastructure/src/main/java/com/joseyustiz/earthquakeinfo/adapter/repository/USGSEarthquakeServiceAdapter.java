@@ -33,7 +33,7 @@ public class USGSEarthquakeServiceAdapter implements LoadEarthquakeInfoPort {
         UUGSEarthquakeInfoQueryResult serviceResponse = restTemplate.getForObject(url, UUGSEarthquakeInfoQueryResult.class);
         assert serviceResponse != null;
         return serviceResponse.getFeatures().stream()
-                .map(e -> mapEarthquakeInfoFor(e))
+                .map(this::mapEarthquakeInfoFor)
                 .collect(Collectors.toUnmodifiableList());
     }
 

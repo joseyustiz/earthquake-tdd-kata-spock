@@ -20,7 +20,7 @@ class DateRangeSpec extends Specification{
         dataRange20191013_20191013_2 = new DateRange(parse("2019-10-13"),parse("2019-10-13"))
         dataRange20191013_20191014 = new DateRange(parse("2019-10-13"),parse("2019-10-14"))
         dataRange20191013_20191015 = new DateRange(parse("2019-10-13"),parse("2019-10-15"))
-        dataRange20191013_20191016 = new DateRange(parse("2019-10-13"),parse("2019-10-16"));
+        dataRange20191013_20191016 = new DateRange(parse("2019-10-13"),parse("2019-10-16"))
         dataRange20191015_20191016 = new DateRange(parse("2019-10-15"),parse("2019-10-16"))
         dataRange20191010_20191016 = new DateRange(parse("2019-10-10"),parse("2019-10-16"))
 
