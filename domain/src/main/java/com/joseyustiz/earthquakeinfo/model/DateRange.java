@@ -3,6 +3,7 @@ package com.joseyustiz.earthquakeinfo.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,28 +16,29 @@ public class DateRange {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public boolean isOverLap(DateRange dateRange){
-        return equals(dateRange) || (startDate.compareTo(dateRange.getStartDate()) >= 0 && endDate.compareTo(dateRange.getEndDate()) <= 0)
-                || (startDate.compareTo(dateRange.getStartDate()) <= 0 && endDate.compareTo(dateRange.getEndDate()) >= 0);
+    public boolean isOverlapped(DateRange dateRange) {
+        return this.equals(dateRange) || this.isSubsetOf(dateRange) || dateRange.isSubsetOf(this);
     }
 
-    public boolean isConsecutive(DateRange dateRange){
-        return !isOverLap(dateRange) && (endDate.isEqual(dateRange.startDate.minusDays(1)) || dateRange.getEndDate().isEqual(startDate.minusDays(1)));
+    private boolean isSubsetOf(DateRange dateRange) {
+        return dateRange != null && startDate.compareTo(dateRange.getStartDate()) >= 0 && endDate.compareTo(dateRange.getEndDate()) <= 0;
     }
 
-    public static List<DateRange> getOptimumDateRange(DateRange dateRange1, DateRange dateRange2) {
+    public boolean isConsecutive(DateRange dateRange) {
+        return !this.isOverlapped(dateRange) && (endDate.isEqual(dateRange.startDate.minusDays(1)) || dateRange.getEndDate().isEqual(startDate.minusDays(1)));
+    }
+
+    public static List<DateRange> getOptimumDateRange(@NonNull DateRange dateRange1, @NonNull DateRange dateRange2) {
         List<DateRange> optimumDateRanges = new ArrayList<>();
 
-        if(dateRange1.equals(dateRange2)) {
+        if (dateRange1.equals(dateRange2)) {
             optimumDateRanges.add(dateRange1);
+        } else if (dateRange1.isConsecutive(dateRange2) || dateRange1.isOverlapped(dateRange2)) {
+            optimumDateRanges.add(new DateRange(getMinimum(dateRange1.getStartDate(), dateRange2.getEndDate()),
+                    getMaximum(dateRange1.getEndDate(), dateRange2.getEndDate())));
         } else {
-            if (dateRange1.isConsecutive(dateRange2) || dateRange1.isOverLap(dateRange2)) {
-                optimumDateRanges.add(new DateRange(getMinimum(dateRange1.getStartDate(), dateRange2.getEndDate()),
-                        getMaximum(dateRange1.getEndDate(), dateRange2.getEndDate())));
-            } else {
-                optimumDateRanges.add(dateRange1);
-                optimumDateRanges.add(dateRange2);
-            }
+            optimumDateRanges.add(dateRange1);
+            optimumDateRanges.add(dateRange2);
         }
 
         return optimumDateRanges;

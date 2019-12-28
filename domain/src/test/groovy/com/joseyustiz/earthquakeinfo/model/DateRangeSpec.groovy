@@ -28,12 +28,12 @@ class DateRangeSpec extends Specification{
 
     def "the ranges are overlap if the ranges share common dates"(){
         expect:
-        dataRange20191013_20191013.isOverLap(dataRange20191013_20191013_2)
-        dataRange20191013_20191013.isOverLap(dataRange20191013_20191014)
-        dataRange20191013_20191013.isOverLap(dataRange20191013_20191015)
-        dataRange20191013_20191013.isOverLap(dataRange20191010_20191016)
-        dataRange20191010_20191016.isOverLap(dataRange20191013_20191015)
-        !dataRange20191013_20191013.isOverLap(dataRange20191015_20191016)
+        dataRange20191013_20191013.isOverlapped(dataRange20191013_20191013_2)
+        dataRange20191013_20191013.isOverlapped(dataRange20191013_20191014)
+        dataRange20191013_20191013.isOverlapped(dataRange20191013_20191015)
+        dataRange20191013_20191013.isOverlapped(dataRange20191010_20191016)
+        dataRange20191010_20191016.isOverlapped(dataRange20191013_20191015)
+        !dataRange20191013_20191013.isOverlapped(dataRange20191015_20191016)
     }
 
     def "the ranges are consecutive if the endDate ranges1 is a day before the startDate of range2 or vice versa"(){
