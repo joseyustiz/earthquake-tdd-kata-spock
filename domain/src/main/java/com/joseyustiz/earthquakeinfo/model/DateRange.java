@@ -34,8 +34,8 @@ public class DateRange {
         if (dateRange1.equals(dateRange2)) {
             optimumDateRanges.add(dateRange1);
         } else if (dateRange1.isConsecutive(dateRange2) || dateRange1.isOverlapped(dateRange2)) {
-            optimumDateRanges.add(new DateRange(getMinimum(dateRange1.getStartDate(), dateRange2.getEndDate()),
-                    getMaximum(dateRange1.getEndDate(), dateRange2.getEndDate())));
+            optimumDateRanges.add(new DateRange(min(dateRange1.getStartDate(), dateRange2.getEndDate()),
+                    max(dateRange1.getEndDate(), dateRange2.getEndDate())));
         } else {
             optimumDateRanges.add(dateRange1);
             optimumDateRanges.add(dateRange2);
@@ -44,11 +44,11 @@ public class DateRange {
         return optimumDateRanges;
     }
 
-    private static LocalDate getMaximum(LocalDate localDate1, LocalDate localDate2) {
+    private static LocalDate max(@NonNull LocalDate localDate1, @NonNull LocalDate localDate2) {
         return localDate1.compareTo(localDate2) >= 0 ? localDate1 : localDate2;
     }
 
-    private static LocalDate getMinimum(LocalDate localDate1, LocalDate localDate2) {
+    private static LocalDate min(@NonNull LocalDate localDate1, @NonNull LocalDate localDate2) {
         return localDate1.compareTo(localDate2) <= 0 ? localDate1 : localDate2;
     }
 }
