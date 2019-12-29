@@ -1,5 +1,7 @@
 
 language: java
+os: linux
+dist: trusty
 #############################
 # Required for running docker
 sudo: required
