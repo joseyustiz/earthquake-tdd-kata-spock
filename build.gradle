@@ -4,7 +4,7 @@ plugins {
 apply plugin: "jacoco" // this plugin provides code coverage metrics for Java code
 apply plugin: 'java'
 
-def allTestCoverageFile = "$buildDir/jacoco/allTestCoverage.exec"
+def allTestCoverageFile = "$buildDir/jacoco/allTestCoverage.xml"
 
 sonarqube {
     properties {
@@ -14,7 +14,7 @@ sonarqube {
 
 task jacocoMergeTest(type: JacocoMerge) {
     destinationFile = file(allTestCoverageFile)
-    executionData = project.fileTree(dir: '.', include:'**/build/jacoco/test.exec')
+    executionData = project.fileTree(dir: '.', include:'**/build/jacoco/test.xml')
 }
 
 subprojects {
@@ -24,7 +24,7 @@ subprojects {
         String sonarModuleKey = rootProject.group + ':' + rootProject.name + ':' + projectKey
         properties {
             property "sonar.moduleKey", sonarModuleKey
-            property "sonar.jacoco.reportPaths", allTestCoverageFile
+            property "sonar.coverage.jacoco.xmlReportPaths", allTestCoverageFile
         }
     }
 }
@@ -38,8 +38,8 @@ test {
         }
     }
     reports {
-        junitXml.enabled = false
-        html.enabled = true
+        junitXml.enabled = true
+        html.enabled = false
     }
 }
 
