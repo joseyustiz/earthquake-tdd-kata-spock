@@ -28,7 +28,7 @@ public class DateRange {
         return !this.isOverlapped(dateRange) && (endDate.isEqual(dateRange.startDate.minusDays(1)) || dateRange.getEndDate().isEqual(startDate.minusDays(1)));
     }
 
-    public static List<DateRange> getOptimumDateRange(@NonNull DateRange dateRange1, @NonNull DateRange dateRange2) {
+    public static List<DateRange> getOptimumDateRange( DateRange dateRange1, DateRange dateRange2) {
         List<DateRange> optimumDateRanges = new ArrayList<>();
 
         if (dateRange1.equals(dateRange2)) {
