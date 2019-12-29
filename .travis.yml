@@ -6,13 +6,14 @@ sudo: required
 services:
   - docker
 #############################
+git:
+  depth: false
 addons:
   sonarcloud:
     organization: "joseyustiz-github"
     token:
       secure: $SONAR_TOKEN
 before_cache:
-  - git fetch --unshallow
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
