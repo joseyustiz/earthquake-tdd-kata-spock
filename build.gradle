@@ -1,51 +1,34 @@
 plugins {
     id "org.sonarqube" version "2.8"
 }
+
 apply plugin: "jacoco" // this plugin provides code coverage metrics for Java code
 apply plugin: 'java'
 
-def allTestCoverageFile = "$buildDir/jacoco/allTestCoverage.xml"
-
 sonarqube {
     properties {
-        property "sonar.jacoco.reportPaths", allTestCoverageFile
+        property "sonar.sourceEncoding", "UTF-8"
     }
-}
-
-task jacocoMergeTest(type: JacocoMerge) {
-    destinationFile = file(allTestCoverageFile)
-    executionData = project.fileTree(dir: '.', include:'**/build/jacoco/test.xml')
 }
 
 subprojects {
     sonarqube {
-        String regex = "(.*)/(.*)"
-        String projectKey = project.name.replaceAll(regex, "\$1:\$2")
-        String sonarModuleKey = rootProject.group + ':' + rootProject.name + ':' + projectKey
         properties {
-            property "sonar.moduleKey", sonarModuleKey
-            property "sonar.coverage.jacoco.xmlReportPaths", allTestCoverageFile
+            property "sonar.sources", "src"
         }
     }
 }
 
-test {
-    testLogging {
-        afterSuite { desc, result ->
-            if (!desc.parent) {
-                println "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
-            }
-        }
-    }
+jacocoTestReport {
     reports {
-        junitXml.enabled = true
-        html.enabled = false
+        xml.enabled true
     }
 }
-
 allprojects {
     repositories {
         mavenCentral()
         jcenter()
     }
 }
+
+project.tasks["sonarqube"].dependsOn "jacocoTestReport"

@@ -1,2 +1,2 @@
 rootProject.name = 'earthquack-tdd-kata-spock'
-include 'infrastructure', 'domain', 'common'
+include 'infrastructure', 'domain'
