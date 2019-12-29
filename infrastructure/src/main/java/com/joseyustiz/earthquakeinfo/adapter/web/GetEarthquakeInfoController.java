@@ -19,7 +19,7 @@ public class GetEarthquakeInfoController {
         return mapInfoTo(service.getInfoBetweenDates(startDate, endDate));
     }
 
-    public List<String> getInfoBetweenMagnitudes(BigDecimal minMagnitude, BigDecimal maxMagnitude) {
+    public List<String> getInfoBetweenMagnitudes(BigDecimal minMagnitude, BigDecimal     maxMagnitude) {
         return mapInfoTo(service.getInfoBetweenMagnitudes(minMagnitude, maxMagnitude));
     }
 
