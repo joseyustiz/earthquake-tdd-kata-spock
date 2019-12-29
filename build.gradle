@@ -10,13 +10,13 @@ sonarqube {
     }
 }
 
-subprojects {
-    sonarqube {
-        properties {
-            property "sonar.sources", "src"
-        }
-    }
-}
+//subprojects {
+//    sonarqube {
+//        properties {
+//            property "sonar.sources", "src"
+//        }
+//    }
+//}
 
 jacocoTestReport {
     reports {
