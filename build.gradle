@@ -15,7 +15,7 @@ sonarqube {
 subprojects {
     sonarqube {
         properties {
-            property "sonar.sources", "src"
+            property "sonar.tests", "src/test"
         }
     }
 }
