@@ -56,7 +56,7 @@ test {
 subprojects {
     sonarqube {
         properties {
-            property "sonar.tests", "src/test"
+            property "sonar.tests", "src/test/groovy,src/test/java"
         }
     }
 }
