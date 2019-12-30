@@ -7,6 +7,8 @@ plugins {
 apply plugin: 'java'
 apply plugin: "jacoco" // this plugin provides code coverage metrics for Java code
 
+def allTestCoverageFile = "$buildDir/jacoco/allTestCoverage.exec"
+
 sonarqube {
     properties {
         property "sonar.sourceEncoding", "UTF-8"
