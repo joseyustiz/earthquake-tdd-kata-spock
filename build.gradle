@@ -5,6 +5,7 @@ plugins {
     id "jacoco"
 }
 apply plugin: 'java'
+apply plugin: 'groovy'
 apply plugin: "jacoco" // this plugin provides code coverage metrics for Java code
 
 def allTestCoverageFile = "$buildDir/jacoco/allTestCoverage.exec"
@@ -46,19 +47,19 @@ test {
         }
     }
     reports {
-        junitXml.enabled = false
+        junitXml.enabled = true
         html.enabled = true
     }
 }
 
 
-//subprojects {
-//    sonarqube {
-//        properties {
-//            property "sonar.tests", "src/test"
-//        }
-//    }
-//}
+subprojects {
+    sonarqube {
+        properties {
+            property "sonar.tests", "src/test"
+        }
+    }
+}
 
 jacocoTestReport {
     group = 'Coverage reports'
