@@ -25,6 +25,7 @@ script:
   - docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
 #  - ./gradlew clean test jacocoTestReport #-Dsonar.coverage.jacoco.xmlReportPaths=${TRAVIS_BUILD_DIR}/jacoco/allTestCoverage.xml
   - ./gradlew clean test jacocoMerge # sonarqube -Dsonar.jacoco.reportPaths=${TRAVIS_BUILD_DIR}/jacoco/allTestCoverage.exec
+  - ls -al ${TRAVIS_BUILD_DIR}
   - sonar-scanner -Dsonar.jacoco.reportPaths=${TRAVIS_BUILD_DIR}/jacoco/allTestCoverage.exec
 #  - sonar-scanner
 notifications:
